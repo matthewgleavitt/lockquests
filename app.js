@@ -1,4 +1,4 @@
-// Main app logic for index page
+// Main app logic for index page - UPDATED FOR AUTO PHOTOS
 (function() {
     const config = window.LOCKQUESTS_CONFIG;
     
@@ -29,6 +29,19 @@
             showError('Error loading data. Check console for details.');
         });
     
+    function slugify(text) {
+        return text.toLowerCase()
+            .replace(/[^\w\s-]/g, '')
+            .replace(/[\s_-]+/g, '-')
+            .replace(/^-+|-+$/g, '');
+    }
+    
+    function getPhotoUrl(togetherNum, roomName) {
+        const numPadded = String(togetherNum).padStart(4, '0');
+        const slug = slugify(roomName);
+        return `https://matthewgleavitt.github.io/lockquests/photos/${numPadded}-${slug}.jpg`;
+    }
+    
     function displayRooms(sheetData) {
         const headers = sheetData[0];
         const rows = sheetData.slice(1);
@@ -42,8 +55,7 @@
             date: headers.indexOf('Date'),
             timeLeft: headers.indexOf('Time Left'),
             avgRating: headers.indexOf('Average Rating'),
-            togetherNum: headers.indexOf('Together Unique #'),
-            photoUrl: headers.indexOf('Photo URL')
+            togetherNum: headers.indexOf('Together Unique #')
         };
         
         // Filter to together rooms
@@ -57,8 +69,7 @@
                 date: row[colIndices.date] || '',
                 timeLeft: row[colIndices.timeLeft] || '',
                 avgRating: parseFloat(row[colIndices.avgRating]) || 0,
-                togetherNum: parseInt(row[colIndices.togetherNum]) || 0,
-                photoUrl: row[colIndices.photoUrl] || null
+                togetherNum: parseInt(row[colIndices.togetherNum]) || 0
             }))
             .sort((a, b) => b.togetherNum - a.togetherNum);
         
@@ -67,18 +78,16 @@
         
         // Generate HTML
         const html = togetherRooms.map(room => {
-            const imageHtml = room.photoUrl 
-                ? `<img src="${room.photoUrl}" alt="${room.roomName}">`
-                : `<div style="position: relative; z-index: 1; text-align: center;">
-                       <div style="font-family: 'Bebas Neue', sans-serif; font-size: 2em; opacity: 0.7;">
-                           #${String(room.togetherNum).padStart(4, '0')}
-                       </div>
-                       <div style="font-size: 0.9em; margin-top: 10px;">📷 Add photo URL</div>
-                   </div>`;
+            const photoUrl = getPhotoUrl(room.togetherNum, room.roomName);
             
             return `
                 <a href="room.html?id=${room.togetherNum}" class="room-card">
-                    <div class="room-image">${imageHtml}</div>
+                    <div class="room-image">
+                        <img src="${photoUrl}" 
+                             alt="${room.roomName}"
+                             onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\\'position: relative; z-index: 1; text-align: center;\\'><div style=\\'font-family: Bebas Neue, sans-serif; font-size: 2em; opacity: 0.7;\\'>#${String(room.togetherNum).padStart(4, '0')}</div><div style=\\'font-size: 0.9em; margin-top: 10px;\\'>📷 Photo: ${String(room.togetherNum).padStart(4, '0')}-${slugify(room.roomName)}.jpg</div></div>';"
+                             style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
                     <div class="room-content">
                         <div class="room-title">${room.roomName}</div>
                         <div class="room-company">${room.company}</div>
@@ -108,4 +117,7 @@
         document.getElementById('loadingContainer').innerHTML = 
             `<div class="loading"><p>${message}</p></div>`;
     }
+    
+    // Make slugify available globally for error handler
+    window.slugify = slugify;
 })();
