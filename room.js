@@ -1,4 +1,4 @@
-// Room page logic
+// Room page logic - UPDATED FOR AUTO PHOTOS
 (function() {
     const config = window.LOCKQUESTS_CONFIG;
     const urlParams = new URLSearchParams(window.location.search);
@@ -8,6 +8,19 @@
         document.getElementById('roomDescription').textContent = 
             'Please configure your Google Sheet ID and API Key in config.js';
         return;
+    }
+    
+    function slugify(text) {
+        return text.toLowerCase()
+            .replace(/[^\w\s-]/g, '')
+            .replace(/[\s_-]+/g, '-')
+            .replace(/^-+|-+$/g, '');
+    }
+    
+    function getPhotoUrl(togetherNum, roomName) {
+        const numPadded = String(togetherNum).padStart(4, '0');
+        const slug = slugify(roomName);
+        return `https://matthewgleavitt.github.io/lockquests/photos/${numPadded}-${slug}.jpg`;
     }
     
     // Fetch from Google Sheets
@@ -45,7 +58,6 @@
             mikeRating: headers.indexOf('Mike Rating'),
             mattRating: headers.indexOf('Matt Rating'),
             togetherNum: headers.indexOf('Together Unique #'),
-            photoUrl: headers.indexOf('Photo URL'),
             description: headers.indexOf('Description')
         };
         
@@ -63,7 +75,6 @@
                     avgRating: parseFloat(row[colIndices.avgRating]) || 0,
                     mikeRating: parseFloat(row[colIndices.mikeRating]) || 0,
                     mattRating: parseFloat(row[colIndices.mattRating]) || 0,
-                    photoUrl: row[colIndices.photoUrl] || null,
                     description: row[colIndices.description] || 'Add a description column to your Google Sheet to display it here.'
                 };
             }
@@ -72,6 +83,9 @@
     }
     
     function updatePage(data) {
+        const photoUrl = getPhotoUrl(data.togetherNum, data.roomName);
+        const photoFilename = `${String(data.togetherNum).padStart(4, '0')}-${slugify(data.roomName)}.jpg`;
+        
         document.getElementById('pageTitle').textContent = 
             `${data.roomName} [${data.company}] - Lock Quests`;
         document.getElementById('roomTitle').textContent = 
@@ -95,14 +109,17 @@
         document.getElementById('navNumber').textContent = data.togetherNum;
         document.getElementById('roomDescription').textContent = data.description;
         
-        // Photo
-        if (data.photoUrl) {
+        // Photo - try to load, show placeholder if not found
+        const img = new Image();
+        img.onload = function() {
             document.getElementById('featuredImage').innerHTML = 
-                `<img src="${data.photoUrl}" alt="${data.roomName}" style="width: 100%; height: 100%; object-fit: cover;">`;
-        } else {
+                `<img src="${photoUrl}" alt="${data.roomName}" style="width: 100%; height: 100%; object-fit: cover;">`;
+        };
+        img.onerror = function() {
             document.getElementById('imageStatus').textContent = 
-                '📷 Add "Photo URL" column to sheet';
-        }
+                `📷 Upload: ${photoFilename}`;
+        };
+        img.src = photoUrl;
         
         // Format dates
         const date = new Date(data.date);
