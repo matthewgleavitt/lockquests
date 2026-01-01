@@ -5,7 +5,7 @@ const CONFIG = {
     // Your Google Sheet ID (from the URL)
     // Example: https://docs.google.com/spreadsheets/d/ABC123XYZ/edit
     // Your Sheet ID is: ABC123XYZ
-    SHEET_ID: '1lY9u3H-WnjciDV21v62yroFCBCkljbyz',
+    SHEET_ID: '10iKJWSILOwRHidV_YIuMl2b_ovQsZANcRxsUBHpaS0U',
     
     // Your Google API Key
     // Get from: https://console.cloud.google.com/apis/credentials
