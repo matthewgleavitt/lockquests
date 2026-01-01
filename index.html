@@ -9,26 +9,73 @@
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Additional filter styles */
+        /* Filter & Search Styles */
         .filter-bar {
             background: white;
             padding: 25px;
             border-radius: 10px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             margin-bottom: 30px;
+        }
+        
+        .search-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .search-box {
+            flex: 1;
+            position: relative;
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 12px 45px 12px 15px;
+            border: 2px solid #eee;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+        
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--lockquest-purple);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .search-box input::placeholder {
+            color: #999;
+        }
+        
+        .search-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--lockquest-gray);
+            font-size: 1.2em;
+        }
+        
+        .filters-row {
             display: flex;
             gap: 15px;
             flex-wrap: wrap;
             align-items: center;
         }
         
-        .filter-bar label {
-            font-weight: 600;
-            color: var(--lockquest-dark);
-            margin-right: 8px;
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
         
-        .filter-bar select {
+        .filter-group label {
+            font-weight: 600;
+            color: var(--lockquest-dark);
+        }
+        
+        .filter-group select {
             padding: 10px 15px;
             border: 2px solid #eee;
             border-radius: 8px;
@@ -39,20 +86,14 @@
             transition: all 0.3s;
         }
         
-        .filter-bar select:hover {
+        .filter-group select:hover {
             border-color: var(--lockquest-purple);
         }
         
-        .filter-bar select:focus {
+        .filter-group select:focus {
             outline: none;
             border-color: var(--lockquest-purple);
             box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-        
-        .filter-group {
-            display: flex;
-            align-items: center;
-            gap: 8px;
         }
         
         .clear-filters {
@@ -75,6 +116,28 @@
             color: var(--lockquest-gray);
             font-size: 0.95em;
             margin-bottom: 20px;
+        }
+        
+        .active-filter-badge {
+            background: var(--lockquest-purple);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin: 0 5px 10px 0;
+        }
+        
+        .active-filter-badge button {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 1.2em;
+            padding: 0;
+            line-height: 1;
         }
     </style>
 </head>
@@ -106,10 +169,6 @@
                     <li>Replace <code>YOUR_API_KEY</code> with your Google API Key</li>
                     <li>Save and reload this page</li>
                 </ol>
-                
-                <p style="margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.2);">
-                    <strong>Need help?</strong> See <code>README.txt</code> for detailed instructions.
-                </p>
             </div>
         </div>
         
@@ -118,41 +177,58 @@
                 Our Escape Room Adventures
             </h2>
             
+            <!-- Active Filters Display -->
+            <div id="activeFilters" style="margin-bottom: 15px;"></div>
+            
             <!-- Filter Bar -->
             <div class="filter-bar">
-                <div class="filter-group">
-                    <label for="stateFilter">State:</label>
-                    <select id="stateFilter">
-                        <option value="">All States</option>
-                    </select>
+                <!-- Search Row -->
+                <div class="search-row">
+                    <div class="search-box">
+                        <input type="text" 
+                               id="searchBox" 
+                               placeholder="Search by room name, company, or location..."
+                               autocomplete="off">
+                        <span class="search-icon">🔍</span>
+                    </div>
                 </div>
                 
-                <div class="filter-group">
-                    <label for="ratingFilter">Rating:</label>
-                    <select id="ratingFilter">
-                        <option value="">All Ratings</option>
-                        <option value="5">5 Stars</option>
-                        <option value="4.5">4.5+ Stars</option>
-                        <option value="4">4+ Stars</option>
-                        <option value="3.5">3.5+ Stars</option>
-                        <option value="3">3+ Stars</option>
-                        <option value="2">2+ Stars</option>
-                    </select>
+                <!-- Filters Row -->
+                <div class="filters-row">
+                    <div class="filter-group">
+                        <label for="stateFilter">State:</label>
+                        <select id="stateFilter">
+                            <option value="">All States</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="ratingFilter">Rating:</label>
+                        <select id="ratingFilter">
+                            <option value="">All Ratings</option>
+                            <option value="5">5 Stars</option>
+                            <option value="4.5">4.5+ Stars</option>
+                            <option value="4">4+ Stars</option>
+                            <option value="3.5">3.5+ Stars</option>
+                            <option value="3">3+ Stars</option>
+                            <option value="2">2+ Stars</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="sortFilter">Sort:</label>
+                        <select id="sortFilter">
+                            <option value="date-desc">Newest First</option>
+                            <option value="date-asc">Oldest First</option>
+                            <option value="rating-desc">Highest Rated</option>
+                            <option value="rating-asc">Lowest Rated</option>
+                            <option value="name-asc">Name A-Z</option>
+                            <option value="name-desc">Name Z-A</option>
+                        </select>
+                    </div>
+                    
+                    <button class="clear-filters" id="clearFilters">Clear All</button>
                 </div>
-                
-                <div class="filter-group">
-                    <label for="sortFilter">Sort:</label>
-                    <select id="sortFilter">
-                        <option value="date-desc">Newest First</option>
-                        <option value="date-asc">Oldest First</option>
-                        <option value="rating-desc">Highest Rated</option>
-                        <option value="rating-asc">Lowest Rated</option>
-                        <option value="name-asc">Name A-Z</option>
-                        <option value="name-desc">Name Z-A</option>
-                    </select>
-                </div>
-                
-                <button class="clear-filters" id="clearFilters">Clear Filters</button>
             </div>
             
             <!-- Results Info -->
@@ -177,6 +253,32 @@
         // Global state
         let allRooms = [];
         let filteredRooms = [];
+        let searchTimeout;
+        
+        // Get URL parameters
+        function getUrlParams() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                search: params.get('search') || '',
+                state: params.get('state') || '',
+                company: params.get('company') || '',
+                rating: params.get('rating') || '',
+                sort: params.get('sort') || 'date-desc'
+            };
+        }
+        
+        // Update URL without reload
+        function updateUrl(params) {
+            const url = new URL(window.location);
+            Object.keys(params).forEach(key => {
+                if (params[key]) {
+                    url.searchParams.set(key, params[key]);
+                } else {
+                    url.searchParams.delete(key);
+                }
+            });
+            window.history.pushState({}, '', url);
+        }
         
         // Initialize
         (function() {
@@ -252,10 +354,18 @@
                 stateFilter.appendChild(option);
             });
             
+            // Apply URL parameters
+            const urlParams = getUrlParams();
+            document.getElementById('searchBox').value = urlParams.search;
+            document.getElementById('stateFilter').value = urlParams.state;
+            document.getElementById('ratingFilter').value = urlParams.rating;
+            document.getElementById('sortFilter').value = urlParams.sort;
+            
             // Set up event listeners
-            document.getElementById('stateFilter').addEventListener('change', applyFilters);
-            document.getElementById('ratingFilter').addEventListener('change', applyFilters);
-            document.getElementById('sortFilter').addEventListener('change', applyFilters);
+            document.getElementById('searchBox').addEventListener('input', onSearchChange);
+            document.getElementById('stateFilter').addEventListener('change', onFilterChange);
+            document.getElementById('ratingFilter').addEventListener('change', onFilterChange);
+            document.getElementById('sortFilter').addEventListener('change', onFilterChange);
             document.getElementById('clearFilters').addEventListener('click', clearFilters);
             
             // Initial display
@@ -265,16 +375,44 @@
             document.getElementById('roomsContainer').style.display = 'block';
         }
         
+        function onSearchChange() {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(() => {
+                onFilterChange();
+            }, 300); // Debounce search
+        }
+        
+        function onFilterChange() {
+            const params = {
+                search: document.getElementById('searchBox').value,
+                state: document.getElementById('stateFilter').value,
+                rating: document.getElementById('ratingFilter').value,
+                sort: document.getElementById('sortFilter').value
+            };
+            updateUrl(params);
+            applyFilters();
+        }
+        
         function applyFilters() {
+            const searchTerm = document.getElementById('searchBox').value.toLowerCase();
             const stateFilter = document.getElementById('stateFilter').value;
             const ratingFilter = parseFloat(document.getElementById('ratingFilter').value) || 0;
             const sortFilter = document.getElementById('sortFilter').value;
             
+            // Get company from URL if present (from tag clicks)
+            const urlParams = getUrlParams();
+            const companyFilter = urlParams.company || '';
+            
             // Filter
             filteredRooms = allRooms.filter(room => {
+                const searchMatch = !searchTerm || 
+                    room.roomName.toLowerCase().includes(searchTerm) ||
+                    room.company.toLowerCase().includes(searchTerm) ||
+                    room.location.toLowerCase().includes(searchTerm);
                 const stateMatch = !stateFilter || room.state === stateFilter;
+                const companyMatch = !companyFilter || room.company === companyFilter;
                 const ratingMatch = room.avgRating >= ratingFilter;
-                return stateMatch && ratingMatch;
+                return searchMatch && stateMatch && companyMatch && ratingMatch;
             });
             
             // Sort
@@ -297,13 +435,52 @@
                 }
             });
             
+            displayActiveFilters(companyFilter);
             displayRooms();
         }
         
+        function displayActiveFilters(companyFilter) {
+            const container = document.getElementById('activeFilters');
+            const search = document.getElementById('searchBox').value;
+            const state = document.getElementById('stateFilter').value;
+            const rating = document.getElementById('ratingFilter').value;
+            
+            let html = '';
+            
+            if (search) {
+                html += `<span class="active-filter-badge">Search: "${search}" <button onclick="removeFilter('search')">×</button></span>`;
+            }
+            if (state) {
+                html += `<span class="active-filter-badge">State: ${state} <button onclick="removeFilter('state')">×</button></span>`;
+            }
+            if (companyFilter) {
+                html += `<span class="active-filter-badge">Company: ${companyFilter} <button onclick="removeFilter('company')">×</button></span>`;
+            }
+            if (rating) {
+                html += `<span class="active-filter-badge">Rating: ${rating}+ Stars <button onclick="removeFilter('rating')">×</button></span>`;
+            }
+            
+            container.innerHTML = html;
+        }
+        
+        window.removeFilter = function(type) {
+            if (type === 'search') document.getElementById('searchBox').value = '';
+            if (type === 'state') document.getElementById('stateFilter').value = '';
+            if (type === 'rating') document.getElementById('ratingFilter').value = '';
+            if (type === 'company') {
+                const url = new URL(window.location);
+                url.searchParams.delete('company');
+                window.history.pushState({}, '', url);
+            }
+            onFilterChange();
+        };
+        
         function clearFilters() {
+            document.getElementById('searchBox').value = '';
             document.getElementById('stateFilter').value = '';
             document.getElementById('ratingFilter').value = '';
             document.getElementById('sortFilter').value = 'date-desc';
+            updateUrl({});
             applyFilters();
         }
         
@@ -337,7 +514,7 @@
                 `;
             }).join('');
             
-            document.getElementById('roomsGrid').innerHTML = html;
+            document.getElementById('roomsGrid').innerHTML = html || '<p style="grid-column: 1/-1; text-align: center; padding: 60px 20px; color: #999;">No rooms found matching your search.</p>';
         }
         
         function formatDate(dateStr) {
@@ -350,6 +527,8 @@
             document.getElementById('loadingContainer').innerHTML = 
                 `<div class="loading"><p>${message}</p></div>`;
         }
+        
+        window.slugify = slugify;
     </script>
 </body>
 </html>
