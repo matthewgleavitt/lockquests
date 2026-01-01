@@ -9,7 +9,7 @@ const CONFIG = {
     
     // Your Google API Key
     // Get from: https://console.cloud.google.com/apis/credentials
-    API_KEY: 'AIzaSyDMi0EzZqlUEF19jAcsBsdER8E28NaDXOI',
+    API_KEY: 'AIzaSyBVewWmBpnJqLrONPTl3Pjm8Lj0S5M_8jY',
     
     // The sheet name and range to read
     SHEET_RANGE: 'Master List!A:Z'
