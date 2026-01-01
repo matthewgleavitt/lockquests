@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="pageTitle">Room - Lock Quests</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="site-header">
+        <div class="header-content">
+            <a href="index.html" class="logo">🔐 LOCK QUESTS</a>
+            <nav class="nav">
+                <a href="index.html">Home</a>
+                <a href="#about">About Us</a>
+                <a href="index.html#escapes">Our Escapes</a>
+                <a href="#top">Top Rooms</a>
+            </nav>
+        </div>
+    </header>
+    
+    <div class="breadcrumb">
+        <a href="index.html">Home</a> › <a href="#" id="breadcrumbState">State</a> › <span id="breadcrumbRoom">Room</span>
+    </div>
+    
+    <div class="container">
+        <div class="room-header">
+            <h1 class="room-title" id="roomTitle">Loading...</h1>
+            <div class="room-meta">
+                <span>📅 <time id="roomDate">-</time></span>
+                <span>📍 <span id="roomLocation">-</span></span>
+                <span>🏷️ <a href="#" id="roomCategory">-</a></span>
+            </div>
+        </div>
+        
+        <div class="content-grid">
+            <div class="left-column">
+                <div class="featured-image">
+                    <div class="image-placeholder" id="featuredImage">
+                        <div class="image-placeholder-text">
+                            <div class="image-number" id="imageNumber">#0000</div>
+                            <div id="imageStatus">📷 Photo loading...</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="room-description">
+                    <h3>Description</h3>
+                    <p id="roomDescription">Loading description...</p>
+                </div>
+                
+                <div class="tags-section">
+                    <div class="tags-title">Tagged In</div>
+                    <div class="tag-list" id="tagList">
+                        <a href="#" class="tag">Loading...</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="right-column">
+                <div class="rating-box">
+                    <div class="rating-score" id="avgRating">- / 5.0</div>
+                    <div class="rating-subtitle">Average Rating</div>
+                    
+                    <div class="rating-bars">
+                        <div class="rating-row">
+                            <span class="rating-label">Mike</span>
+                            <div class="rating-bar">
+                                <div class="rating-fill" id="mikeBar" style="width: 0%"></div>
+                            </div>
+                            <span class="rating-value" id="mikeRating">-</span>
+                        </div>
+                        <div class="rating-row">
+                            <span class="rating-label">Matt</span>
+                            <div class="rating-bar">
+                                <div class="rating-fill" id="mattBar" style="width: 0%"></div>
+                            </div>
+                            <span class="rating-value" id="mattRating">-</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="room-details">
+                    <table>
+                        <tr>
+                            <td>Company</td>
+                            <td><a href="#" id="companyLink" target="_blank">-</a></td>
+                        </tr>
+                        <tr>
+                            <td>Game Name</td>
+                            <td id="gameName">-</td>
+                        </tr>
+                        <tr>
+                            <td>Location</td>
+                            <td id="locationDetail">-</td>
+                        </tr>
+                        <tr>
+                            <td>Time Left</td>
+                            <td id="timeLeft">-</td>
+                        </tr>
+                        <tr>
+                            <td>Date Played</td>
+                            <td id="datePlayed">-</td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <div class="room-navigation">
+                    Room <strong id="navNumber">-</strong> / <span id="navTotal">599</span>
+                    <div class="nav-buttons">
+                        <a href="#" class="nav-btn" id="prevBtn">← Previous</a>
+                        <a href="index.html" class="nav-btn">All Rooms</a>
+                        <a href="#" class="nav-btn" id="nextBtn">Next →</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="config.js"></script>
+    <script src="room.js"></script>
+</body>
+</html>

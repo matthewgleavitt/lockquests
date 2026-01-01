@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lock Quests - Escape Room Reviews</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="site-header">
+        <div class="header-content">
+            <a href="index.html" class="logo">🔐 LOCK QUESTS</a>
+            <nav class="nav">
+                <a href="index.html">Home</a>
+                <a href="#about">About Us</a>
+                <a href="#escapes">Our Escapes</a>
+                <a href="#top">Top Rooms</a>
+            </nav>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="setup-box" id="setupBox">
+            <h2>🚀 Setup Required</h2>
+            <p style="font-size: 1.1em; margin-bottom: 20px;">
+                Add your Google Sheet ID and API Key to <strong>config.js</strong> to load your rooms!
+            </p>
+            
+            <div class="setup-steps">
+                <h3>Quick Setup:</h3>
+                <ol>
+                    <li>Open <code>config.js</code> in a text editor</li>
+                    <li>Replace <code>YOUR_SHEET_ID</code> with your Google Sheet ID</li>
+                    <li>Replace <code>YOUR_API_KEY</code> with your Google API Key</li>
+                    <li>Save and reload this page</li>
+                </ol>
+                
+                <p style="margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.2);">
+                    <strong>Need help?</strong> See <code>README.txt</code> for detailed instructions.
+                </p>
+            </div>
+        </div>
+        
+        <div id="roomsContainer" style="display: none;">
+            <h2 style="font-family: 'Bebas Neue', sans-serif; font-size: 2.5em; margin-bottom: 30px; letter-spacing: 1px;">
+                Our Escape Room Adventures (<span id="roomCount">0</span> Rooms)
+            </h2>
+            <div class="grid" id="roomsGrid"></div>
+        </div>
+        
+        <div id="loadingContainer" style="display: none;">
+            <div class="loading">
+                <div class="loading-spinner"></div>
+                <p>Loading rooms from Google Sheets...</p>
+            </div>
+        </div>
+    </div>
+    
+    <script src="config.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
