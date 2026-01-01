@@ -1,4 +1,4 @@
-// Main app logic for index page - UPDATED FOR AUTO PHOTOS
+// Main app logic for index page - HANDLES BOTH .jpg AND .JPG
 (function() {
     const config = window.LOCKQUESTS_CONFIG;
     
@@ -36,10 +36,23 @@
             .replace(/^-+|-+$/g, '');
     }
     
-    function getPhotoUrl(togetherNum, roomName) {
+    async function getPhotoUrl(togetherNum, roomName) {
         const numPadded = String(togetherNum).padStart(4, '0');
         const slug = slugify(roomName);
-        return `https://matthewgleavitt.github.io/lockquests/photos/${numPadded}-${slug}.jpg`;
+        const baseUrl = `https://matthewgleavitt.github.io/lockquests/photos/${numPadded}-${slug}`;
+        
+        // Try .jpg first, then .JPG
+        const urlJpg = `${baseUrl}.jpg`;
+        const urlJPG = `${baseUrl}.JPG`;
+        
+        // Check if .jpg exists
+        try {
+            const response = await fetch(urlJpg, { method: 'HEAD' });
+            if (response.ok) return urlJpg;
+        } catch (e) {}
+        
+        // Otherwise return .JPG (will fallback to placeholder if doesn't exist)
+        return urlJPG;
     }
     
     function displayRooms(sheetData) {
@@ -78,14 +91,15 @@
         
         // Generate HTML
         const html = togetherRooms.map(room => {
-            const photoUrl = getPhotoUrl(room.togetherNum, room.roomName);
+            const numPadded = String(room.togetherNum).padStart(4, '0');
+            const slug = slugify(room.roomName);
             
             return `
                 <a href="room.html?id=${room.togetherNum}" class="room-card">
                     <div class="room-image">
-                        <img src="${photoUrl}" 
+                        <img src="https://matthewgleavitt.github.io/lockquests/photos/${numPadded}-${slug}.jpg" 
                              alt="${room.roomName}"
-                             onerror="this.style.display='none'; this.parentElement.innerHTML='<div style=\\'position: relative; z-index: 1; text-align: center;\\'><div style=\\'font-family: Bebas Neue, sans-serif; font-size: 2em; opacity: 0.7;\\'>#${String(room.togetherNum).padStart(4, '0')}</div><div style=\\'font-size: 0.9em; margin-top: 10px;\\'>📷 Photo: ${String(room.togetherNum).padStart(4, '0')}-${slugify(room.roomName)}.jpg</div></div>';"
+                             onerror="this.src='https://matthewgleavitt.github.io/lockquests/photos/${numPadded}-${slug}.JPG'; this.onerror=function(){this.style.display='none'; this.parentElement.innerHTML='<div style=\\'position: relative; z-index: 1; text-align: center;\\'><div style=\\'font-family: Bebas Neue, sans-serif; font-size: 2em; opacity: 0.7;\\'>#${numPadded}</div><div style=\\'font-size: 0.9em; margin-top: 10px;\\'>📷 Photo: ${numPadded}-${slug}.jpg</div></div>';};"
                              style="width: 100%; height: 100%; object-fit: cover;">
                     </div>
                     <div class="room-content">
@@ -118,6 +132,6 @@
             `<div class="loading"><p>${message}</p></div>`;
     }
     
-    // Make slugify available globally for error handler
+    // Make slugify available globally
     window.slugify = slugify;
 })();
