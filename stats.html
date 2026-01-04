@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stats - Lock Quests</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .stats-hero {
+            background: linear-gradient(135deg, #3F3B52 0%, #2d2a3a 100%);
+            color: white;
+            padding: 80px 20px 60px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stats-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 40px,
+                rgba(255,255,255,0.03) 40px,
+                rgba(255,255,255,0.03) 80px
+            );
+            animation: slide 20s linear infinite;
+        }
+
+        @keyframes slide {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(80px, 80px); }
+        }
+
+        .stats-hero h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 4em;
+            margin: 0 0 15px;
+            letter-spacing: 3px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stats-hero p {
+            font-size: 1.3em;
+            opacity: 0.9;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 35px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #3F3B52, #5a5669);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(63, 59, 82, 0.2);
+        }
+
+        .stat-card h3 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.4em;
+            color: #3F3B52;
+            margin: 0 0 20px;
+            letter-spacing: 1px;
+        }
+
+        .stat-number {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 4em;
+            color: #3F3B52;
+            line-height: 1;
+            margin: 20px 0;
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.95em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .milestone-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .milestone-badge {
+            background: linear-gradient(135deg, #3F3B52, #5a5669);
+            color: white;
+            padding: 15px 10px;
+            border-radius: 10px;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.5em;
+            letter-spacing: 1px;
+            box-shadow: 0 3px 10px rgba(63, 59, 82, 0.3);
+        }
+
+        .section-header {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .section-header h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.5em;
+            color: #3F3B52;
+            margin: 0;
+            letter-spacing: 2px;
+        }
+
+        .location-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .location-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+        }
+
+        .location-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(63, 59, 82, 0.2);
+        }
+
+        .location-name {
+            font-weight: 700;
+            color: #1a1a1a;
+            font-size: 1.1em;
+        }
+
+        .location-count {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2em;
+            color: #3F3B52;
+            letter-spacing: 1px;
+        }
+
+        .chart-container {
+            background: white;
+            padding: 35px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .chart-bar {
+            margin-bottom: 20px;
+        }
+
+        .chart-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .bar-container {
+            height: 30px;
+            background: #f0f0f0;
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3F3B52, #5a5669);
+            border-radius: 15px;
+            transition: width 1.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 15px;
+            color: white;
+            font-weight: 700;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            .stats-hero h1 {
+                font-size: 2.5em;
+            }
+            
+            .stat-number {
+                font-size: 3em;
+            }
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3F3B52;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <div class="header-content">
+            <a href="index.html" class="logo">Lock Quests</a>
+            <nav class="nav">
+                <a href="index.html">All Rooms</a>
+                <a href="stats.html">Stats</a>
+                <a href="about.html">About</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="stats-hero">
+        <h1>By the Numbers</h1>
+        <p>626 rooms, 21 states, countless memories</p>
+    </div>
+
+    <div class="container">
+        <div id="loading" class="loading">
+            <div class="loading-spinner"></div>
+            <p>Loading stats from Google Sheets...</p>
+        </div>
+
+        <div id="stats-content" style="display: none;">
+            <!-- Personal Stats -->
+            <div class="stats-grid" id="personal-stats"></div>
+
+            <!-- Milestones Section -->
+            <div class="section-header">
+                <h2>🎯 Milestones</h2>
+            </div>
+            <div class="stats-grid" id="milestones-section"></div>
+
+            <!-- By Location -->
+            <div class="section-header">
+                <h2>📍 By Location</h2>
+            </div>
+            <div class="location-grid" id="location-grid"></div>
+
+            <!-- Top Companies -->
+            <div class="section-header">
+                <h2>🏢 Top Companies</h2>
+            </div>
+            <div class="chart-container" id="companies-chart"></div>
+        </div>
+    </div>
+
+    <script>
+        const SHEET_ID = '10iKJWSILOwRHidV_YIuM12b_ovQsZANcRxsUBHpaS0U';
+        const API_KEY = 'AIzaSyBVewWmBpnJqLrONPT13Pjm8Lj0S5M_8jY';
+
+        async function fetchStats() {
+            try {
+                const response = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/Master%20List!A:Z?key=${API_KEY}`);
+                const data = await response.json();
+                
+                const headers = data.values[0];
+                const rows = data.values.slice(1);
+                
+                // Find column indices
+                const mattRatingIdx = headers.indexOf('Matt Rating');
+                const mikeRatingIdx = headers.indexOf('Mike Rating');
+                const avgRatingIdx = headers.indexOf('Average Rating');
+                const mattUniqueIdx = headers.indexOf('Matt Unique #');
+                const mikeUniqueIdx = headers.indexOf('Mike Unique #');
+                const togetherIdx = headers.indexOf('Together Unique #');
+                const stateIdx = headers.indexOf('State/Region');
+                const companyIdx = headers.indexOf('Company');
+                
+                // Calculate stats
+                const mattRooms = new Set();
+                const mikeRooms = new Set();
+                const togetherRooms = new Set();
+                let matt5Stars = 0;
+                let mike5Stars = 0;
+                let together5Stars = 0;
+                const states = {};
+                const companies = {};
+                
+                rows.forEach(row => {
+                    if (!row[0]) return; // Skip empty rows
+                    
+                    if (row[mattUniqueIdx]) {
+                        mattRooms.add(parseInt(row[mattUniqueIdx]));
+                        if (parseFloat(row[mattRatingIdx]) === 5.0) matt5Stars++;
+                    }
+                    
+                    if (row[mikeUniqueIdx]) {
+                        mikeRooms.add(parseInt(row[mikeUniqueIdx]));
+                        if (parseFloat(row[mikeRatingIdx]) === 5.0) mike5Stars++;
+                    }
+                    
+                    if (row[togetherIdx]) {
+                        togetherRooms.add(parseInt(row[togetherIdx]));
+                        if (parseFloat(row[avgRatingIdx]) === 5.0) together5Stars++;
+                    }
+                    
+                    if (row[stateIdx]) {
+                        states[row[stateIdx]] = (states[row[stateIdx]] || 0) + 1;
+                    }
+                    
+                    if (row[companyIdx]) {
+                        companies[row[companyIdx]] = (companies[row[companyIdx]] || 0) + 1;
+                    }
+                });
+                
+                renderStats({
+                    matt: { total: mattRooms.size, fiveStars: matt5Stars },
+                    mike: { total: mikeRooms.size, fiveStars: mike5Stars },
+                    together: { total: togetherRooms.size, fiveStars: together5Stars },
+                    states,
+                    companies
+                });
+                
+            } catch (error) {
+                console.error('Error fetching stats:', error);
+                document.getElementById('loading').innerHTML = `
+                    <p>Error loading stats: ${error.message}</p>
+                    <p style="font-size: 0.9em; color: #999;">This could be a temporary API rate limit. Wait a few minutes and refresh.</p>
+                `;
+            }
+        }
+
+        function renderStats(stats) {
+            // Personal Stats
+            const personalHtml = `
+                <div class="stat-card">
+                    <h3>👤 Matt</h3>
+                    <div class="stat-number">${stats.matt.total}</div>
+                    <div class="stat-label">Total Rooms</div>
+                    <div style="margin-top: 20px;">
+                        <div class="stat-number" style="font-size: 2.5em;">${stats.matt.fiveStars}</div>
+                        <div class="stat-label">5-Star Ratings</div>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <h3>👤 Mike</h3>
+                    <div class="stat-number">${stats.mike.total}</div>
+                    <div class="stat-label">Total Rooms</div>
+                    <div style="margin-top: 20px;">
+                        <div class="stat-number" style="font-size: 2.5em;">${stats.mike.fiveStars}</div>
+                        <div class="stat-label">5-Star Ratings</div>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <h3>👥 Together</h3>
+                    <div class="stat-number">${stats.together.total}</div>
+                    <div class="stat-label">Total Rooms</div>
+                    <div style="margin-top: 20px;">
+                        <div class="stat-number" style="font-size: 2.5em;">${stats.together.fiveStars}</div>
+                        <div class="stat-label">5-Star Ratings</div>
+                    </div>
+                </div>
+            `;
+            document.getElementById('personal-stats').innerHTML = personalHtml;
+            
+            // Milestones
+            const mattMilestones = Array.from({ length: Math.floor(stats.matt.total / 100) }, (_, i) => (i + 1) * 100);
+            const mikeMilestones = Array.from({ length: Math.floor(stats.mike.total / 100) }, (_, i) => (i + 1) * 100);
+            const togetherMilestones = Array.from({ length: Math.floor(stats.together.total / 100) }, (_, i) => (i + 1) * 100);
+            
+            const milestonesHtml = `
+                <div class="stat-card">
+                    <h3>Matt's Milestones</h3>
+                    <div class="milestone-grid">
+                        ${mattMilestones.map(m => `<div class="milestone-badge">#${m}</div>`).join('')}
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <h3>Mike's Milestones</h3>
+                    <div class="milestone-grid">
+                        ${mikeMilestones.map(m => `<div class="milestone-badge">#${m}</div>`).join('')}
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <h3>Together Milestones</h3>
+                    <div class="milestone-grid">
+                        ${togetherMilestones.map(m => `<div class="milestone-badge">#${m}</div>`).join('')}
+                    </div>
+                </div>
+            `;
+            document.getElementById('milestones-section').innerHTML = milestonesHtml;
+            
+            // Locations
+            const sortedStates = Object.entries(stats.states).sort((a, b) => b[1] - a[1]);
+            const locationsHtml = sortedStates.map(([state, count]) => `
+                <div class="location-card">
+                    <div class="location-name">${state}</div>
+                    <div class="location-count">${count}</div>
+                </div>
+            `).join('');
+            document.getElementById('location-grid').innerHTML = locationsHtml;
+            
+            // Top Companies Chart
+            const topCompanies = Object.entries(stats.companies)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 10);
+            const maxCount = topCompanies[0][1];
+            
+            const companiesHtml = topCompanies.map(([company, count]) => {
+                const percentage = (count / maxCount) * 100;
+                return `
+                    <div class="chart-bar">
+                        <div class="chart-label">
+                            <span>${company}</span>
+                            <span>${count} rooms</span>
+                        </div>
+                        <div class="bar-container">
+                            <div class="bar-fill" style="width: ${percentage}%"></div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            document.getElementById('companies-chart').innerHTML = companiesHtml;
+            
+            // Show content, hide loading
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('stats-content').style.display = 'block';
+            
+            // Animate bars
+            setTimeout(() => {
+                document.querySelectorAll('.bar-fill').forEach(bar => {
+                    bar.style.width = bar.style.width; // Trigger animation
+                });
+            }, 100);
+        }
+
+        // Load stats on page load
+        fetchStats();
+    </script>
+</body>
+</html>
