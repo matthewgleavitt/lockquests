@@ -1,0 +1,30 @@
+<!-- Mobile Bottom Navigation - Add this before closing </body> tag -->
+<nav class="mobile-nav">
+    <a href="index.html" class="mobile-nav-item">
+        <div class="mobile-nav-icon">🔑</div>
+        <div class="mobile-nav-label">Rooms</div>
+    </a>
+    <a href="stats.html" class="mobile-nav-item">
+        <div class="mobile-nav-icon">📊</div>
+        <div class="mobile-nav-label">Stats</div>
+    </a>
+    <a href="about.html" class="mobile-nav-item">
+        <div class="mobile-nav-icon">👥</div>
+        <div class="mobile-nav-label">About</div>
+    </a>
+</nav>
+
+<script>
+// Highlight active page in mobile nav
+(function() {
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    const navItems = document.querySelectorAll('.mobile-nav-item');
+    
+    navItems.forEach(item => {
+        const href = item.getAttribute('href');
+        if (href === currentPage || (currentPage === '' && href === 'index.html')) {
+            item.classList.add('active');
+        }
+    });
+})();
+</script>
