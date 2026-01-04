@@ -1,4 +1,4 @@
-// Room page logic - UPDATED FOR AUTO PHOTOS
+// Room page logic - WITH CLICKABLE TAGS
 (function() {
     const config = window.LOCKQUESTS_CONFIG;
     const urlParams = new URLSearchParams(window.location.search);
@@ -15,12 +15,6 @@
             .replace(/[^\w\s-]/g, '')
             .replace(/[\s_-]+/g, '-')
             .replace(/^-+|-+$/g, '');
-    }
-    
-    function getPhotoUrl(togetherNum, roomName) {
-        const numPadded = String(togetherNum).padStart(4, '0');
-        const slug = slugify(roomName);
-        return `https://matthewgleavitt.github.io/lockquests/photos/${numPadded}-${slug}.jpg`;
     }
     
     // Fetch from Google Sheets
@@ -46,6 +40,11 @@
     function findRoom(sheetData, targetId) {
         const headers = sheetData[0];
         const rows = sheetData.slice(1);
+        
+        // Count total "together" rooms for navigation
+        const togetherIdx = headers.indexOf('Together Unique #');
+        const totalRooms = rows.filter(row => row[togetherIdx] && row[togetherIdx].trim()).length;
+        document.getElementById('navTotal').textContent = totalRooms;
         
         const colIndices = {
             roomName: headers.indexOf('Room Name'),
@@ -83,8 +82,9 @@
     }
     
     function updatePage(data) {
-        const photoUrl = getPhotoUrl(data.togetherNum, data.roomName);
-        const photoFilename = `${String(data.togetherNum).padStart(4, '0')}-${slugify(data.roomName)}.jpg`;
+        const numPadded = String(data.togetherNum).padStart(4, '0');
+        const slug = slugify(data.roomName);
+        const photoFilename = `${numPadded}-${slug}`;
         
         document.getElementById('pageTitle').textContent = 
             `${data.roomName} [${data.company}] - Lock Quests`;
@@ -97,7 +97,9 @@
         document.getElementById('locationDetail').textContent = 
             `${data.location}, ${data.state}`;
         document.getElementById('roomCategory').textContent = data.state;
+        document.getElementById('roomCategory').href = `index.html?state=${encodeURIComponent(data.state)}`;
         document.getElementById('breadcrumbState').textContent = data.state;
+        document.getElementById('breadcrumbState').href = `index.html?state=${encodeURIComponent(data.state)}`;
         document.getElementById('breadcrumbRoom').textContent = data.roomName;
         document.getElementById('timeLeft').textContent = data.timeLeft || 'N/A';
         document.getElementById('avgRating').textContent = 
@@ -105,21 +107,30 @@
         document.getElementById('mikeRating').textContent = data.mikeRating.toFixed(1);
         document.getElementById('mattRating').textContent = data.mattRating.toFixed(1);
         document.getElementById('imageNumber').textContent = 
-            `#${String(data.togetherNum).padStart(4, '0')}`;
+            `#${numPadded}`;
         document.getElementById('navNumber').textContent = data.togetherNum;
         document.getElementById('roomDescription').textContent = data.description;
         
-        // Photo - try to load, show placeholder if not found
-        const img = new Image();
-        img.onload = function() {
+        // Photo - try .jpg first, then .JPG
+        const imgJpg = new Image();
+        imgJpg.onload = function() {
             document.getElementById('featuredImage').innerHTML = 
-                `<img src="${photoUrl}" alt="${data.roomName}" style="width: 100%; height: 100%; object-fit: cover;">`;
+                `<img src="https://matthewgleavitt.github.io/lockquests/photos/${photoFilename}.jpg" alt="${data.roomName}" style="width: 100%; height: 100%; object-fit: cover;">`;
         };
-        img.onerror = function() {
-            document.getElementById('imageStatus').textContent = 
-                `📷 Upload: ${photoFilename}`;
+        imgJpg.onerror = function() {
+            // Try .JPG
+            const imgJPG = new Image();
+            imgJPG.onload = function() {
+                document.getElementById('featuredImage').innerHTML = 
+                    `<img src="https://matthewgleavitt.github.io/lockquests/photos/${photoFilename}.JPG" alt="${data.roomName}" style="width: 100%; height: 100%; object-fit: cover;">`;
+            };
+            imgJPG.onerror = function() {
+                document.getElementById('imageStatus').textContent = 
+                    `📷 Upload: ${photoFilename}.jpg or .JPG`;
+            };
+            imgJPG.src = `https://matthewgleavitt.github.io/lockquests/photos/${photoFilename}.JPG`;
         };
-        img.src = photoUrl;
+        imgJpg.src = `https://matthewgleavitt.github.io/lockquests/photos/${photoFilename}.jpg`;
         
         // Format dates
         const date = new Date(data.date);
@@ -136,11 +147,12 @@
                 `${(data.mattRating / 5) * 100}%`;
         }, 100);
         
-        // Tags
+        // Tags - NOW CLICKABLE!
+        const ratingFloor = Math.floor(data.avgRating * 2) / 2; // Round to nearest 0.5
         const tagHtml = [
-            `<a href="#" class="tag">Rating: ${data.avgRating.toFixed(1)}</a>`,
-            `<a href="#" class="tag">${data.state}</a>`,
-            `<a href="#" class="tag">${data.company}</a>`
+            `<a href="index.html?rating=${ratingFloor}" class="tag">Rating: ${data.avgRating.toFixed(1)}</a>`,
+            `<a href="index.html?state=${encodeURIComponent(data.state)}" class="tag">${data.state}</a>`,
+            `<a href="index.html?company=${encodeURIComponent(data.company)}" class="tag">${data.company}</a>`
         ].join('');
         document.getElementById('tagList').innerHTML = tagHtml;
         
