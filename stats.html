@@ -311,6 +311,10 @@
                 const response = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/Master%20List!A:Z?key=${API_KEY}`);
                 const data = await response.json();
                 
+                if (!data.values || data.values.length === 0) {
+                    throw new Error('No data returned from Google Sheets');
+                }
+                
                 const headers = data.values[0];
                 const rows = data.values.slice(1);
                 
@@ -323,6 +327,10 @@
                 const togetherIdx = headers.indexOf('Together Unique #');
                 const stateIdx = headers.indexOf('State/Region');
                 const companyIdx = headers.indexOf('Company');
+                
+                if (mattUniqueIdx === -1 || mikeUniqueIdx === -1 || togetherIdx === -1) {
+                    throw new Error('Required columns not found in sheet');
+                }
                 
                 // Calculate stats
                 const mattRooms = new Set();
