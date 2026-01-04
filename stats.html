@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="style.css">
     <style>
         .stats-hero {
-            background: linear-gradient(135deg, #3F3B52 0%, #2d2a3a 100%);
+            background: #1a1a1a;
             color: white;
             padding: 80px 20px 60px;
             text-align: center;
@@ -18,26 +18,29 @@
             overflow: hidden;
         }
 
-        .stats-hero::before {
-            content: '';
+        .particle {
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: repeating-linear-gradient(
-                45deg,
-                transparent,
-                transparent 40px,
-                rgba(255,255,255,0.03) 40px,
-                rgba(255,255,255,0.03) 80px
-            );
-            animation: slide 20s linear infinite;
+            background: #3F3B52;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: floatAndFade linear infinite;
         }
 
-        @keyframes slide {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(80px, 80px); }
+        @keyframes floatAndFade {
+            0% { 
+                transform: translateY(0);
+                opacity: 0;
+            }
+            5% {
+                opacity: 0.8;
+            }
+            95% {
+                opacity: 0.8;
+            }
+            100% { 
+                transform: translateY(-150vh);
+                opacity: 0;
+            }
         }
 
         .stats-hero h1 {
@@ -271,6 +274,39 @@
         <h1>By the Numbers</h1>
         <p>626 rooms, 21 states, countless memories</p>
     </div>
+
+    <script>
+        // Generate random floating particles
+        (function() {
+            const hero = document.querySelector('.stats-hero');
+            const particleCount = 80; // More particles for continuous effect
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                // Random size between 1-3px
+                const size = Math.random() * 2 + 1;
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                
+                // Random X position
+                particle.style.left = Math.random() * 100 + '%';
+                
+                // Random starting Y position below the screen
+                particle.style.top = (100 + Math.random() * 50) + '%';
+                
+                // Random animation duration (20-40s) - longer durations
+                const duration = Math.random() * 20 + 20;
+                particle.style.animationDuration = duration + 's';
+                
+                // Spread delays across the full duration to ensure continuous appearance
+                particle.style.animationDelay = -(Math.random() * duration) + 's';
+                
+                hero.appendChild(particle);
+            }
+        })();
+    </script>
 
     <div class="container">
         <div id="loading" class="loading">
@@ -552,5 +588,21 @@
         // Load stats on page load
         fetchStats();
     </script>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="mobile-nav">
+        <a href="index.html" class="mobile-nav-item">
+            <div class="mobile-nav-icon">🔑</div>
+            <div class="mobile-nav-label">Rooms</div>
+        </a>
+        <a href="stats.html" class="mobile-nav-item active">
+            <div class="mobile-nav-icon">📊</div>
+            <div class="mobile-nav-label">Stats</div>
+        </a>
+        <a href="about.html" class="mobile-nav-item">
+            <div class="mobile-nav-icon">👥</div>
+            <div class="mobile-nav-label">About</div>
+        </a>
+    </nav>
 </body>
 </html>
