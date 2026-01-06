@@ -444,9 +444,7 @@
                 const companies = {}; // Only count Together rooms
                 
                 const roomNameIdx = headers.indexOf('Room Name');
-                const companyIdx = headers.indexOf('Company');
                 const locationIdx = headers.indexOf('Location');
-                const stateIdx = headers.indexOf('State/Region');
                 
                 rows.forEach(row => {
                     if (!row[0]) return; // Skip empty rows
