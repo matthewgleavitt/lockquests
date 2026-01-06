@@ -7,7 +7,7 @@
     const CACHE_TIMESTAMP_KEY = 'lockquests_timestamp';
     const CACHE_VERSION_KEY = 'lockquests_cache_version';
     const CACHE_DURATION = 10 * 60 * 1000; // 10 minutes
-    const CURRENT_VERSION = '1.2'; // Increment this to force cache refresh
+    const CURRENT_VERSION = '1.3'; // Increment this to force cache refresh
     
     // Check cache version
     const cachedVersion = localStorage.getItem(CACHE_VERSION_KEY);
@@ -101,6 +101,7 @@
         const ratingIdx = headers.indexOf('Average Rating');
         const dateIdx = headers.indexOf('Date');
         const togetherIdx = headers.indexOf('Together Unique #');
+        const descriptionIdx = headers.indexOf('Description');
         
         allRooms = [];
         const states = new Set();
@@ -123,7 +124,8 @@
                 state: state,
                 rating: parseFloat(row[ratingIdx]) || 0,
                 date: row[dateIdx] || '',
-                photoUrl: photoUrl
+                photoUrl: photoUrl,
+                description: row[descriptionIdx] || ''
             });
             
             if (state) states.add(state);
@@ -223,6 +225,7 @@
                         <div class="room-company">${room.company}</div>
                         <div class="room-location">${room.location}, ${room.state}</div>
                         <div class="room-rating">⭐ ${room.rating.toFixed(1)}</div>
+                        ${room.description ? `<div class="room-description">${room.description}</div>` : ''}
                         <div class="room-meta">
                             <span>📅 ${room.date}</span>
                             <span>#${room.id}</span>
