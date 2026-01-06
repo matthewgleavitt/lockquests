@@ -5,7 +5,18 @@
     // Cache configuration
     const CACHE_KEY = 'lockquests_data';
     const CACHE_TIMESTAMP_KEY = 'lockquests_timestamp';
+    const CACHE_VERSION_KEY = 'lockquests_cache_version';
     const CACHE_DURATION = 10 * 60 * 1000; // 10 minutes
+    const CURRENT_VERSION = '1.0'; // Increment this to force cache refresh
+    
+    // Check cache version
+    const cachedVersion = localStorage.getItem(CACHE_VERSION_KEY);
+    if (cachedVersion !== CURRENT_VERSION) {
+        console.log('Cache version changed, clearing old cache');
+        localStorage.removeItem(CACHE_KEY);
+        localStorage.removeItem(CACHE_TIMESTAMP_KEY);
+        localStorage.setItem(CACHE_VERSION_KEY, CURRENT_VERSION);
+    }
     
     if (!config || config.SHEET_ID === 'YOUR_SHEET_ID' || config.API_KEY === 'YOUR_API_KEY') {
         console.log('Please configure your Google Sheet ID and API Key in config.js');
