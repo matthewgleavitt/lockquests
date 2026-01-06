@@ -7,7 +7,7 @@
     const CACHE_TIMESTAMP_KEY = 'lockquests_timestamp';
     const CACHE_VERSION_KEY = 'lockquests_cache_version';
     const CACHE_DURATION = 10 * 60 * 1000; // 10 minutes
-    const CURRENT_VERSION = '1.8'; // Increment this to force cache refresh
+    const CURRENT_VERSION = '1.9'; // Increment this to force cache refresh
     
     // Check cache version
     const cachedVersion = localStorage.getItem(CACHE_VERSION_KEY);
@@ -281,9 +281,9 @@
                             ${room.location}, ${room.state}
                         </div>
                         ${room.description ? `
-                            <hr style="border: none; border-top: 1px solid #eee; margin: 12px 0;">
+                            <hr style="border: none; border-top: 1px solid #3F3B52; margin: 10px 0 0 0;">
                             <div class="room-description">${room.description}</div>
-                        ` : '<hr style="border: none; border-top: 1px solid #eee; margin: 12px 0;">'}
+                        ` : '<hr style="border: none; border-top: 1px solid #3F3B52; margin: 10px 0 0 0;">'}
                         <div class="room-meta-pill">
                             <span>
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: middle; margin-right: 3px;">
