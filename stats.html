@@ -272,7 +272,7 @@
 
     <div class="stats-hero">
         <h1>By the Numbers</h1>
-        <p>626 rooms, 21 states, countless memories</p>
+        <p><span id="heroTotalRooms">602</span> rooms, <span id="heroTotalStates">21</span> states, countless memories</p>
     </div>
 
     <script>
@@ -285,8 +285,8 @@
                 const particle = document.createElement('div');
                 particle.className = 'particle';
                 
-                // Random size between 1-3px
-                const size = Math.random() * 2 + 1;
+                // Random size between 2-6px (bigger and more variation)
+                const size = Math.random() * 4 + 2;
                 particle.style.width = size + 'px';
                 particle.style.height = size + 'px';
                 
@@ -345,7 +345,18 @@
         // Cache configuration
         const CACHE_KEY = 'lockquests_stats_data';
         const CACHE_TIMESTAMP_KEY = 'lockquests_stats_timestamp';
+        const CACHE_VERSION_KEY = 'lockquests_cache_version';
         const CACHE_DURATION = 10 * 60 * 1000; // 10 minutes
+        const CURRENT_VERSION = '1.1'; // Increment this to force cache refresh
+        
+        // Check cache version
+        const cachedVersion = localStorage.getItem(CACHE_VERSION_KEY);
+        if (cachedVersion !== CURRENT_VERSION) {
+            console.log('Cache version changed, clearing old cache');
+            localStorage.removeItem(CACHE_KEY);
+            localStorage.removeItem(CACHE_TIMESTAMP_KEY);
+            localStorage.setItem(CACHE_VERSION_KEY, CURRENT_VERSION);
+        }
         
         function getCache() {
             try {
@@ -427,27 +438,40 @@
                 const mattRooms = new Set();
                 const mikeRooms = new Set();
                 const togetherRooms = new Set();
+                const mattRoomsWithNames = [];
+                const mikeRoomsWithNames = [];
+                const togetherRoomsWithNames = [];
                 let matt5Stars = 0;
                 let mike5Stars = 0;
                 let together5Stars = 0;
                 const states = {};
                 const companies = {};
                 
+                const roomNameIdx = headers.indexOf('Room Name');
+                
                 rows.forEach(row => {
                     if (!row[0]) return; // Skip empty rows
                     
+                    const roomName = row[roomNameIdx] || '';
+                    
                     if (row[mattUniqueIdx]) {
-                        mattRooms.add(parseInt(row[mattUniqueIdx]));
+                        const num = parseInt(row[mattUniqueIdx]);
+                        mattRooms.add(num);
+                        mattRoomsWithNames.push({ number: num, room: roomName });
                         if (parseFloat(row[mattRatingIdx]) === 5.0) matt5Stars++;
                     }
                     
                     if (row[mikeUniqueIdx]) {
-                        mikeRooms.add(parseInt(row[mikeUniqueIdx]));
+                        const num = parseInt(row[mikeUniqueIdx]);
+                        mikeRooms.add(num);
+                        mikeRoomsWithNames.push({ number: num, room: roomName });
                         if (parseFloat(row[mikeRatingIdx]) === 5.0) mike5Stars++;
                     }
                     
                     if (row[togetherIdx]) {
-                        togetherRooms.add(parseInt(row[togetherIdx]));
+                        const num = parseInt(row[togetherIdx]);
+                        togetherRooms.add(num);
+                        togetherRoomsWithNames.push({ number: num, room: roomName });
                         if (parseFloat(row[avgRatingIdx]) === 5.0) together5Stars++;
                     }
                     
@@ -460,16 +484,45 @@
                     }
                 });
                 
+                // Get milestone room names
+                const getMilestones = (roomsArray) => {
+                    const milestones = [];
+                    for (let i = 100; i <= Math.floor(roomsArray.length / 100) * 100; i += 100) {
+                        const room = roomsArray.find(r => r.number === i);
+                        milestones.push({
+                            number: i,
+                            room: room ? room.room : ''
+                        });
+                    }
+                    return milestones;
+                };
+                
                 renderStats({
-                    matt: { total: mattRooms.size, fiveStars: matt5Stars },
-                    mike: { total: mikeRooms.size, fiveStars: mike5Stars },
-                    together: { total: togetherRooms.size, fiveStars: together5Stars },
+                    matt: { 
+                        total: mattRooms.size, 
+                        fiveStars: matt5Stars,
+                        milestones: getMilestones(mattRoomsWithNames)
+                    },
+                    mike: { 
+                        total: mikeRooms.size, 
+                        fiveStars: mike5Stars,
+                        milestones: getMilestones(mikeRoomsWithNames)
+                    },
+                    together: { 
+                        total: togetherRooms.size, 
+                        fiveStars: together5Stars,
+                        milestones: getMilestones(togetherRoomsWithNames)
+                    },
                     states,
                     companies
                 });
         }
 
         function renderStats(stats) {
+            // Update hero with Together stats
+            document.getElementById('heroTotalRooms').textContent = stats.together.total;
+            document.getElementById('heroTotalStates').textContent = Object.keys(stats.states).length;
+            
             // Personal Stats
             const personalHtml = `
                 <div class="stat-card">
@@ -504,46 +557,57 @@
             `;
             document.getElementById('personal-stats').innerHTML = personalHtml;
             
-            // Milestones
-            const mattMilestones = Array.from({ length: Math.floor(stats.matt.total / 100) }, (_, i) => (i + 1) * 100);
-            const mikeMilestones = Array.from({ length: Math.floor(stats.mike.total / 100) }, (_, i) => (i + 1) * 100);
-            const togetherMilestones = Array.from({ length: Math.floor(stats.together.total / 100) }, (_, i) => (i + 1) * 100);
-            
+            // Milestones - now with room names
             const milestonesHtml = `
                 <div class="stat-card">
                     <h3>Matt's Milestones</h3>
                     <div class="milestone-grid">
-                        ${mattMilestones.map(m => `<div class="milestone-badge">#${m}</div>`).join('')}
+                        ${stats.matt.milestones.map(m => `
+                            <div class="milestone-badge">
+                                #${m.number}
+                                <div style="font-size: 0.5em; margin-top: 5px; opacity: 0.8;">${m.room || ''}</div>
+                            </div>
+                        `).join('')}
                     </div>
                 </div>
                 
                 <div class="stat-card">
                     <h3>Mike's Milestones</h3>
                     <div class="milestone-grid">
-                        ${mikeMilestones.map(m => `<div class="milestone-badge">#${m}</div>`).join('')}
+                        ${stats.mike.milestones.map(m => `
+                            <div class="milestone-badge">
+                                #${m.number}
+                                <div style="font-size: 0.5em; margin-top: 5px; opacity: 0.8;">${m.room || ''}</div>
+                            </div>
+                        `).join('')}
                     </div>
                 </div>
                 
                 <div class="stat-card">
                     <h3>Together Milestones</h3>
                     <div class="milestone-grid">
-                        ${togetherMilestones.map(m => `<div class="milestone-badge">#${m}</div>`).join('')}
+                        ${stats.together.milestones.map(m => `
+                            <div class="milestone-badge">
+                                #${m.number}
+                                <div style="font-size: 0.5em; margin-top: 5px; opacity: 0.8;">${m.room || ''}</div>
+                            </div>
+                        `).join('')}
                     </div>
                 </div>
             `;
             document.getElementById('milestones-section').innerHTML = milestonesHtml;
             
-            // Locations
+            // Locations with clickable links
             const sortedStates = Object.entries(stats.states).sort((a, b) => b[1] - a[1]);
             const locationsHtml = sortedStates.map(([state, count]) => `
-                <div class="location-card">
+                <a href="index.html?state=${encodeURIComponent(state)}" class="location-card">
                     <div class="location-name">${state}</div>
                     <div class="location-count">${count}</div>
-                </div>
+                </a>
             `).join('');
             document.getElementById('location-grid').innerHTML = locationsHtml;
             
-            // Top Companies Chart
+            // Top Companies Chart with clickable links
             const topCompanies = Object.entries(stats.companies)
                 .sort((a, b) => b[1] - a[1])
                 .slice(0, 10);
@@ -552,15 +616,17 @@
             const companiesHtml = topCompanies.map(([company, count]) => {
                 const percentage = (count / maxCount) * 100;
                 return `
-                    <div class="chart-bar">
-                        <div class="chart-label">
-                            <span>${company}</span>
-                            <span>${count} rooms</span>
+                    <a href="index.html?company=${encodeURIComponent(company)}" style="text-decoration: none; color: inherit; display: block;">
+                        <div class="chart-bar">
+                            <div class="chart-label">
+                                <span>${company}</span>
+                                <span>${count} rooms</span>
+                            </div>
+                            <div class="bar-container">
+                                <div class="bar-fill" style="width: ${percentage}%"></div>
+                            </div>
                         </div>
-                        <div class="bar-container">
-                            <div class="bar-fill" style="width: ${percentage}%"></div>
-                        </div>
-                    </div>
+                    </a>
                 `;
             }).join('');
             document.getElementById('companies-chart').innerHTML = companiesHtml;

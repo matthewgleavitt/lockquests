@@ -3,105 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lock Quests - Escape Room Reviews</title>
+    <title>The Lock Quest Monsters - Escape Room Reviews</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Filter & Search Styles */
-        .filter-bar {
+        /* Hero Banner */
+        .hero-banner {
+            width: 100%;
+            height: 300px;
+            background: url('sitemedia/lock-quest-hero.jpg') center center / cover no-repeat;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            color: white;
+        }
+        
+        .hero-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 4em;
+            margin: 0;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .hero-subtitle {
+            font-size: 1.2em;
+            margin: 10px 0 0 0;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+        
+        /* Sticky Filter Bar */
+        .filter-container {
+            position: sticky;
+            top: 0;
+            z-index: 100;
             background: white;
-            padding: 25px;
-            border-radius: 10px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             margin-bottom: 30px;
         }
         
-        .search-row {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-        
-        .search-box {
-            flex: 1;
-            position: relative;
-        }
-        
-        .search-box input {
-            width: 100%;
-            padding: 12px 45px 12px 15px;
-            border: 2px solid #eee;
-            border-radius: 8px;
-            font-size: 1em;
-            transition: all 0.3s;
-        }
-        
-        .search-box input:focus {
-            outline: none;
-            border-color: var(--lockquest-purple);
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-        
-        .search-box input::placeholder {
-            color: #999;
-        }
-        
-        .search-icon {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--lockquest-gray);
-            font-size: 1.2em;
-        }
-        
-        .filters-row {
+        .filter-bar {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
             display: flex;
             gap: 15px;
             flex-wrap: wrap;
             align-items: center;
         }
         
-        .filter-group {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .filter-group label {
+        .filter-bar label {
             font-weight: 600;
             color: var(--lockquest-dark);
+            margin-right: 8px;
         }
         
-        .filter-group select {
+        .filter-bar select,
+        .filter-bar input {
             padding: 10px 15px;
             border: 2px solid #eee;
             border-radius: 8px;
             font-size: 1em;
             background: white;
             color: var(--lockquest-dark);
-            cursor: pointer;
-            transition: all 0.3s;
         }
         
-        .filter-group select:hover {
-            border-color: var(--lockquest-purple);
-        }
-        
-        .filter-group select:focus {
+        .filter-bar select:focus,
+        .filter-bar input:focus {
             outline: none;
             border-color: var(--lockquest-purple);
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
         
         .clear-filters {
-            margin-left: auto;
+            padding: 10px 20px;
             background: var(--lockquest-purple);
             color: white;
             border: none;
-            padding: 10px 20px;
             border-radius: 8px;
             cursor: pointer;
             font-weight: 600;
@@ -109,426 +104,172 @@
         }
         
         .clear-filters:hover {
-            background: var(--lockquest-dark-purple);
+            opacity: 0.9;
+            transform: translateY(-2px);
         }
         
-        .results-info {
-            color: var(--lockquest-gray);
-            font-size: 0.95em;
-            margin-bottom: 20px;
-        }
-        
-        .active-filter-badge {
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 80px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
             background: var(--lockquest-purple);
             color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.9em;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            margin: 0 5px 10px 0;
+            border: none;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            z-index: 1000;
         }
         
-        .active-filter-badge button {
-            background: none;
-            border: none;
-            color: white;
-            cursor: pointer;
-            font-size: 1.2em;
-            padding: 0;
-            line-height: 1;
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .back-to-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+        }
+        
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5em;
+            }
+            
+            .filter-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .filter-bar select,
+            .filter-bar input {
+                width: 100%;
+            }
+            
+            .back-to-top {
+                bottom: 120px;
+                right: 20px;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Header -->
     <header class="site-header">
         <div class="header-content">
-            <a href="index.html" class="logo">🔐 LOCK QUESTS</a>
-            <nav class="nav">
-                <a href="index.html">Home</a>
-                <a href="#about">About Us</a>
-                <a href="#escapes">Our Escapes</a>
-                <a href="#top">Top Rooms</a>
-            </nav>
+            <a href="index.html" class="logo">The Lock Quest Monsters</a>
+            <div class="header-right">
+                <nav class="nav">
+                    <a href="index.html">All Escapes</a>
+                    <a href="about.html">About</a>
+                    <a href="stats.html">Stats</a>
+                </nav>
+                <div class="social-icons">
+                    <a href="https://www.facebook.com/TheLockQuestMonsters/" target="_blank" class="social-icon" aria-label="Facebook">
+                        <svg fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                    </a>
+                    <a href="https://www.instagram.com/thelockquestmonsters/" target="_blank" class="social-icon" aria-label="Instagram">
+                        <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.646-1.44-1.44 0-.794.646-1.439 1.44-1.439.793-.001 1.44.645 1.44 1.439z"/></svg>
+                    </a>
+                    <a href="https://morty.app/@TheLockQuestMonsters" target="_blank" class="social-icon" aria-label="Morty" style="font-size: 20px;">
+                        📱
+                    </a>
+                </div>
+            </div>
         </div>
     </header>
-    
-    <div class="container">
-        <div class="setup-box" id="setupBox">
-            <h2>🚀 Setup Required</h2>
-            <p style="font-size: 1.1em; margin-bottom: 20px;">
-                Add your Google Sheet ID and API Key to <strong>config.js</strong> to load your rooms!
-            </p>
-            
-            <div class="setup-steps">
-                <h3>Quick Setup:</h3>
-                <ol>
-                    <li>Open <code>config.js</code> in a text editor</li>
-                    <li>Replace <code>YOUR_SHEET_ID</code> with your Google Sheet ID</li>
-                    <li>Replace <code>YOUR_API_KEY</code> with your Google API Key</li>
-                    <li>Save and reload this page</li>
-                </ol>
-            </div>
-        </div>
-        
-        <div id="roomsContainer" style="display: none;">
-            <h2 style="font-family: 'Bebas Neue', sans-serif; font-size: 2.5em; margin-bottom: 20px; letter-spacing: 1px;">
-                Our Escape Room Adventures
-            </h2>
-            
-            <!-- Active Filters Display -->
-            <div id="activeFilters" style="margin-bottom: 15px;"></div>
-            
-            <!-- Filter Bar -->
-            <div class="filter-bar">
-                <!-- Search Row -->
-                <div class="search-row">
-                    <div class="search-box">
-                        <input type="text" 
-                               id="searchBox" 
-                               placeholder="Search by room name, company, or location..."
-                               autocomplete="off">
-                        <span class="search-icon">🔍</span>
-                    </div>
-                </div>
-                
-                <!-- Filters Row -->
-                <div class="filters-row">
-                    <div class="filter-group">
-                        <label for="stateFilter">State:</label>
-                        <select id="stateFilter">
-                            <option value="">All States</option>
-                        </select>
-                    </div>
-                    
-                    <div class="filter-group">
-                        <label for="ratingFilter">Rating:</label>
-                        <select id="ratingFilter">
-                            <option value="">All Ratings</option>
-                            <option value="5">5 Stars</option>
-                            <option value="4.5">4.5+ Stars</option>
-                            <option value="4">4+ Stars</option>
-                            <option value="3.5">3.5+ Stars</option>
-                            <option value="3">3+ Stars</option>
-                            <option value="2">2+ Stars</option>
-                        </select>
-                    </div>
-                    
-                    <div class="filter-group">
-                        <label for="sortFilter">Sort:</label>
-                        <select id="sortFilter">
-                            <option value="date-desc">Newest First</option>
-                            <option value="date-asc">Oldest First</option>
-                            <option value="rating-desc">Highest Rated</option>
-                            <option value="rating-asc">Lowest Rated</option>
-                            <option value="name-asc">Name A-Z</option>
-                            <option value="name-desc">Name Z-A</option>
-                        </select>
-                    </div>
-                    
-                    <button class="clear-filters" id="clearFilters">Clear All</button>
-                </div>
-            </div>
-            
-            <!-- Results Info -->
-            <div class="results-info">
-                Showing <strong id="filteredCount">0</strong> of <strong id="totalCount">0</strong> rooms
-            </div>
-            
-            <!-- Room Grid -->
-            <div class="grid" id="roomsGrid"></div>
-        </div>
-        
-        <div id="loadingContainer" style="display: none;">
-            <div class="loading">
-                <div class="loading-spinner"></div>
-                <p>Loading rooms from Google Sheets...</p>
-            </div>
+
+    <!-- Hero Banner -->
+    <div class="hero-banner">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1 class="hero-title">The Lock Quest Monsters</h1>
+            <p class="hero-subtitle">602 Escape Rooms Conquered</p>
         </div>
     </div>
-    
+
+    <!-- Sticky Filter Bar -->
+    <div class="filter-container">
+        <div class="filter-bar">
+            <input type="text" id="searchBox" placeholder="Search rooms, companies, locations..." style="flex: 1; min-width: 250px;">
+            
+            <label for="stateFilter">State:</label>
+            <select id="stateFilter">
+                <option value="">All States</option>
+            </select>
+            
+            <label for="companyFilter">Company:</label>
+            <select id="companyFilter">
+                <option value="">All Companies</option>
+            </select>
+            
+            <label for="ratingFilter">Rating:</label>
+            <select id="ratingFilter">
+                <option value="">All Ratings</option>
+                <option value="5">⭐ 5.0</option>
+                <option value="4">⭐ 4.0+</option>
+                <option value="3">⭐ 3.0+</option>
+            </select>
+            
+            <button class="clear-filters" id="clearFilters">Clear Filters</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div id="roomsGrid" class="grid"></div>
+        <div id="loadingContainer" style="text-align: center; padding: 40px;">
+            <p>Loading escape rooms...</p>
+        </div>
+    </div>
+
+    <!-- Back to Top Button -->
+    <button class="back-to-top" id="backToTop" aria-label="Back to top">
+        ↑
+    </button>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="mobile-nav">
+        <a href="index.html" class="mobile-nav-item active">
+            <div class="mobile-nav-icon">🔑</div>
+            <div class="mobile-nav-label">Escapes</div>
+        </a>
+        <a href="stats.html" class="mobile-nav-item">
+            <div class="mobile-nav-icon">📊</div>
+            <div class="mobile-nav-label">Stats</div>
+        </a>
+        <a href="about.html" class="mobile-nav-item">
+            <div class="mobile-nav-icon">👥</div>
+            <div class="mobile-nav-label">About</div>
+        </a>
+    </nav>
+
     <script src="config.js"></script>
+    <script src="app.js"></script>
     <script>
-        // Global state
-        let allRooms = [];
-        let filteredRooms = [];
-        let searchTimeout;
+        // Back to Top functionality
+        const backToTop = document.getElementById('backToTop');
         
-        // Get URL parameters
-        function getUrlParams() {
-            const params = new URLSearchParams(window.location.search);
-            return {
-                search: params.get('search') || '',
-                state: params.get('state') || '',
-                company: params.get('company') || '',
-                rating: params.get('rating') || '',
-                sort: params.get('sort') || 'date-desc'
-            };
-        }
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        });
         
-        // Update URL without reload
-        function updateUrl(params) {
-            const url = new URL(window.location);
-            Object.keys(params).forEach(key => {
-                if (params[key]) {
-                    url.searchParams.set(key, params[key]);
-                } else {
-                    url.searchParams.delete(key);
-                }
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
             });
-            window.history.pushState({}, '', url);
-        }
-        
-        // Initialize
-        (function() {
-            const config = window.LOCKQUESTS_CONFIG;
-            
-            if (!config || config.SHEET_ID === 'YOUR_SHEET_ID' || config.API_KEY === 'YOUR_API_KEY') {
-                console.log('Please configure your Google Sheet ID and API Key in config.js');
-                return;
-            }
-            
-            document.getElementById('setupBox').style.display = 'none';
-            document.getElementById('loadingContainer').style.display = 'block';
-            
-            const url = `https://sheets.googleapis.com/v4/spreadsheets/${config.SHEET_ID}/values/${config.SHEET_RANGE}?key=${config.API_KEY}`;
-            
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.values) {
-                        loadRooms(data.values);
-                    } else {
-                        showError('No data found in sheet');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error loading data:', error);
-                    showError('Error loading data. Check console for details.');
-                });
-        })();
-        
-        function slugify(text) {
-            return text.toLowerCase()
-                .replace(/[^\w\s-]/g, '')
-                .replace(/[\s_-]+/g, '-')
-                .replace(/^-+|-+$/g, '');
-        }
-        
-        function loadRooms(sheetData) {
-            const headers = sheetData[0];
-            const rows = sheetData.slice(1);
-            
-            const colIndices = {
-                roomName: headers.indexOf('Room Name'),
-                company: headers.indexOf('Company'),
-                location: headers.indexOf('Location'),
-                state: headers.indexOf('State/Region'),
-                date: headers.indexOf('Date'),
-                timeLeft: headers.indexOf('Time Left'),
-                avgRating: headers.indexOf('Average Rating'),
-                togetherNum: headers.indexOf('Together Unique #')
-            };
-            
-            allRooms = rows
-                .filter(row => row[colIndices.togetherNum])
-                .map(row => ({
-                    roomName: row[colIndices.roomName] || '',
-                    company: row[colIndices.company] || '',
-                    location: row[colIndices.location] || '',
-                    state: row[colIndices.state] || '',
-                    date: row[colIndices.date] || '',
-                    timeLeft: row[colIndices.timeLeft] || '',
-                    avgRating: parseFloat(row[colIndices.avgRating]) || 0,
-                    togetherNum: parseInt(row[colIndices.togetherNum]) || 0
-                }));
-            
-            // Populate state filter
-            const states = [...new Set(allRooms.map(r => r.state))].sort();
-            const stateFilter = document.getElementById('stateFilter');
-            states.forEach(state => {
-                const option = document.createElement('option');
-                option.value = state;
-                option.textContent = state;
-                stateFilter.appendChild(option);
-            });
-            
-            // Apply URL parameters
-            const urlParams = getUrlParams();
-            document.getElementById('searchBox').value = urlParams.search;
-            document.getElementById('stateFilter').value = urlParams.state;
-            document.getElementById('ratingFilter').value = urlParams.rating;
-            document.getElementById('sortFilter').value = urlParams.sort;
-            
-            // Set up event listeners
-            document.getElementById('searchBox').addEventListener('input', onSearchChange);
-            document.getElementById('stateFilter').addEventListener('change', onFilterChange);
-            document.getElementById('ratingFilter').addEventListener('change', onFilterChange);
-            document.getElementById('sortFilter').addEventListener('change', onFilterChange);
-            document.getElementById('clearFilters').addEventListener('click', clearFilters);
-            
-            // Initial display
-            applyFilters();
-            
-            document.getElementById('loadingContainer').style.display = 'none';
-            document.getElementById('roomsContainer').style.display = 'block';
-        }
-        
-        function onSearchChange() {
-            clearTimeout(searchTimeout);
-            searchTimeout = setTimeout(() => {
-                onFilterChange();
-            }, 300); // Debounce search
-        }
-        
-        function onFilterChange() {
-            const params = {
-                search: document.getElementById('searchBox').value,
-                state: document.getElementById('stateFilter').value,
-                rating: document.getElementById('ratingFilter').value,
-                sort: document.getElementById('sortFilter').value
-            };
-            updateUrl(params);
-            applyFilters();
-        }
-        
-        function applyFilters() {
-            const searchTerm = document.getElementById('searchBox').value.toLowerCase();
-            const stateFilter = document.getElementById('stateFilter').value;
-            const ratingFilter = parseFloat(document.getElementById('ratingFilter').value) || 0;
-            const sortFilter = document.getElementById('sortFilter').value;
-            
-            // Get company from URL if present (from tag clicks)
-            const urlParams = getUrlParams();
-            const companyFilter = urlParams.company || '';
-            
-            // Filter
-            filteredRooms = allRooms.filter(room => {
-                const searchMatch = !searchTerm || 
-                    room.roomName.toLowerCase().includes(searchTerm) ||
-                    room.company.toLowerCase().includes(searchTerm) ||
-                    room.location.toLowerCase().includes(searchTerm);
-                const stateMatch = !stateFilter || room.state === stateFilter;
-                const companyMatch = !companyFilter || room.company === companyFilter;
-                const ratingMatch = room.avgRating >= ratingFilter;
-                return searchMatch && stateMatch && companyMatch && ratingMatch;
-            });
-            
-            // Sort
-            filteredRooms.sort((a, b) => {
-                switch(sortFilter) {
-                    case 'date-desc':
-                        return b.togetherNum - a.togetherNum;
-                    case 'date-asc':
-                        return a.togetherNum - b.togetherNum;
-                    case 'rating-desc':
-                        return b.avgRating - a.avgRating;
-                    case 'rating-asc':
-                        return a.avgRating - b.avgRating;
-                    case 'name-asc':
-                        return a.roomName.localeCompare(b.roomName);
-                    case 'name-desc':
-                        return b.roomName.localeCompare(a.roomName);
-                    default:
-                        return b.togetherNum - a.togetherNum;
-                }
-            });
-            
-            displayActiveFilters(companyFilter);
-            displayRooms();
-        }
-        
-        function displayActiveFilters(companyFilter) {
-            const container = document.getElementById('activeFilters');
-            const search = document.getElementById('searchBox').value;
-            const state = document.getElementById('stateFilter').value;
-            const rating = document.getElementById('ratingFilter').value;
-            
-            let html = '';
-            
-            if (search) {
-                html += `<span class="active-filter-badge">Search: "${search}" <button onclick="removeFilter('search')">×</button></span>`;
-            }
-            if (state) {
-                html += `<span class="active-filter-badge">State: ${state} <button onclick="removeFilter('state')">×</button></span>`;
-            }
-            if (companyFilter) {
-                html += `<span class="active-filter-badge">Company: ${companyFilter} <button onclick="removeFilter('company')">×</button></span>`;
-            }
-            if (rating) {
-                html += `<span class="active-filter-badge">Rating: ${rating}+ Stars <button onclick="removeFilter('rating')">×</button></span>`;
-            }
-            
-            container.innerHTML = html;
-        }
-        
-        window.removeFilter = function(type) {
-            if (type === 'search') document.getElementById('searchBox').value = '';
-            if (type === 'state') document.getElementById('stateFilter').value = '';
-            if (type === 'rating') document.getElementById('ratingFilter').value = '';
-            if (type === 'company') {
-                const url = new URL(window.location);
-                url.searchParams.delete('company');
-                window.history.pushState({}, '', url);
-            }
-            onFilterChange();
-        };
-        
-        function clearFilters() {
-            document.getElementById('searchBox').value = '';
-            document.getElementById('stateFilter').value = '';
-            document.getElementById('ratingFilter').value = '';
-            document.getElementById('sortFilter').value = 'date-desc';
-            updateUrl({});
-            applyFilters();
-        }
-        
-        function displayRooms() {
-            document.getElementById('totalCount').textContent = allRooms.length;
-            document.getElementById('filteredCount').textContent = filteredRooms.length;
-            
-            const html = filteredRooms.map(room => {
-                const numPadded = String(room.togetherNum).padStart(4, '0');
-                const slug = slugify(room.roomName);
-                
-                return `
-                    <a href="room.html?id=${room.togetherNum}" class="room-card">
-                        <div class="room-image">
-                            <img src="https://matthewgleavitt.github.io/lockquests/photos/${numPadded}-${slug}.jpg" 
-                                 alt="${room.roomName}"
-                                 onerror="this.src='https://matthewgleavitt.github.io/lockquests/photos/${numPadded}-${slug}.JPG'; this.onerror=function(){this.style.display='none'; this.parentElement.innerHTML='<div style=\\'position: relative; z-index: 1; text-align: center;\\'><div style=\\'font-family: Bebas Neue, sans-serif; font-size: 2em; opacity: 0.7;\\'>#${numPadded}</div><div style=\\'font-size: 0.9em; margin-top: 10px;\\'>📷 Photo: ${numPadded}-${slug}.jpg</div></div>';};"
-                                 style="width: 100%; height: 100%; object-fit: cover;">
-                        </div>
-                        <div class="room-content">
-                            <div class="room-title">${room.roomName}</div>
-                            <div class="room-company">${room.company}</div>
-                            <div class="room-location">${room.location}, ${room.state}</div>
-                            <div class="room-rating">★ ${room.avgRating.toFixed(1)} / 5.0</div>
-                            <div class="room-meta">
-                                <span>📅 ${formatDate(room.date)}</span>
-                                <span>⏱️ ${room.timeLeft}</span>
-                            </div>
-                        </div>
-                    </a>
-                `;
-            }).join('');
-            
-            document.getElementById('roomsGrid').innerHTML = html || '<p style="grid-column: 1/-1; text-align: center; padding: 60px 20px; color: #999;">No rooms found matching your search.</p>';
-        }
-        
-        function formatDate(dateStr) {
-            if (!dateStr) return 'N/A';
-            const date = new Date(dateStr);
-            return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-        }
-        
-        function showError(message) {
-            document.getElementById('loadingContainer').innerHTML = 
-                `<div class="loading"><p>${message}</p></div>`;
-        }
-        
-        window.slugify = slugify;
+        });
     </script>
 </body>
 </html>
