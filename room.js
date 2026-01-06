@@ -9,7 +9,7 @@
     const CACHE_TIMESTAMP_KEY = 'lockquests_timestamp';
     const CACHE_VERSION_KEY = 'lockquests_cache_version';
     const CACHE_DURATION = 10 * 60 * 1000; // 10 minutes
-    const CURRENT_VERSION = '1.5'; // Increment this to force cache refresh
+    const CURRENT_VERSION = '1.0'; // Increment this to force cache refresh
     
     // Check cache version
     const cachedVersion = localStorage.getItem(CACHE_VERSION_KEY);
@@ -170,9 +170,26 @@
         
         // Update tags with clickable links
         const tagsHtml = `
-            <a href="index.html?company=${encodeURIComponent(room.company)}" class="tag">${room.company}</a>
-            <a href="index.html?state=${encodeURIComponent(room.state)}" class="tag">${room.state}</a>
-            <a href="index.html?rating=${room.avgRating.toFixed(1)}" class="tag">⭐ ${room.avgRating.toFixed(1)}</a>
+            <a href="index.html?company=${encodeURIComponent(room.company)}" class="tag">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 5px;">
+                    <rect x="3" y="3" width="18" height="18" rx="2"/>
+                    <path d="M3 9h18M9 21V9"/>
+                </svg>
+                ${room.company}
+            </a>
+            <a href="index.html?state=${encodeURIComponent(room.state)}" class="tag">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 5px;">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                    <circle cx="12" cy="10" r="3"/>
+                </svg>
+                ${room.state}
+            </a>
+            <a href="index.html?rating=${room.avgRating.toFixed(1)}" class="tag">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: middle; margin-right: 5px;">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                </svg>
+                ${room.avgRating.toFixed(1)}
+            </a>
         `;
         document.getElementById('roomTags').innerHTML = tagsHtml;
         
@@ -184,13 +201,40 @@
             descElement.textContent = 'No description available.';
         }
         
-        // Update photo - just set URL directly
+        // Update photo
         const photoContainer = document.getElementById('roomPhoto');
         const numPadded = String(room.id).padStart(4, '0');
         const slug = slugify(room.name);
-        const photoUrl = `photos/${numPadded}-${slug}.jpg`;
         
-        photoContainer.innerHTML = `<img src="${photoUrl}" alt="${room.name}" onerror="this.parentElement.innerHTML='<div class=\\'image-placeholder-text\\'><div class=\\'image-number\\'>#${numPadded}</div><div>Photo: ${numPadded}-${slug}.jpg</div></div>'">`;
+        async function loadPhoto() {
+            // Try .jpg first
+            let photoUrl = `photos/${numPadded}-${slug}.jpg`;
+            try {
+                const response = await fetch(photoUrl, { method: 'HEAD' });
+                if (!response.ok) {
+                    // Try .JPG
+                    photoUrl = `photos/${numPadded}-${slug}.JPG`;
+                    const response2 = await fetch(photoUrl, { method: 'HEAD' });
+                    if (!response2.ok) {
+                        photoUrl = null;
+                    }
+                }
+            } catch (e) {
+                photoUrl = null;
+            }
+            
+            if (photoUrl) {
+                photoContainer.innerHTML = `<img src="${photoUrl}" alt="${room.name}">`;
+            } else {
+                photoContainer.innerHTML = `
+                    <div class="image-placeholder-text">
+                        <div class="image-number">#${numPadded}</div>
+                        <div>Photo: ${numPadded}-${slug}.jpg</div>
+                    </div>
+                `;
+            }
+        }
+        loadPhoto();
         
         // Update navigation
         document.getElementById('navNumber').textContent = room.id;

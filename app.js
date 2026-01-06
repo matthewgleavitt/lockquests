@@ -7,7 +7,7 @@
     const CACHE_TIMESTAMP_KEY = 'lockquests_timestamp';
     const CACHE_VERSION_KEY = 'lockquests_cache_version';
     const CACHE_DURATION = 10 * 60 * 1000; // 10 minutes
-    const CURRENT_VERSION = '1.6'; // Increment this to force cache refresh
+    const CURRENT_VERSION = '1.0'; // Increment this to force cache refresh
     
     // Check cache version
     const cachedVersion = localStorage.getItem(CACHE_VERSION_KEY);
@@ -252,15 +252,40 @@
                     <div class="room-image">${photoHtml}</div>
                     <div class="room-content">
                         <div class="room-title">${room.name}</div>
-                        <div class="room-company">🏢 ${room.company}</div>
-                        <div class="room-location">📍 ${room.location}, ${room.state}</div>
+                        <div class="room-company">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 4px;">
+                                <rect x="3" y="3" width="18" height="18" rx="2"/>
+                                <path d="M3 9h18M9 21V9"/>
+                            </svg>
+                            ${room.company}
+                        </div>
+                        <div class="room-location">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 4px;">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                                <circle cx="12" cy="10" r="3"/>
+                            </svg>
+                            ${room.location}, ${room.state}
+                        </div>
                         ${room.description ? `
                             <hr style="border: none; border-top: 1px solid #eee; margin: 12px 0;">
                             <div class="room-description">${room.description}</div>
                         ` : '<hr style="border: none; border-top: 1px solid #eee; margin: 12px 0;">'}
                         <div class="room-meta-pill">
-                            <span>⭐ ${room.rating.toFixed(1)}</span>
-                            <span>📅 ${room.date}</span>
+                            <span>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: middle; margin-right: 3px;">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                </svg>
+                                ${room.rating.toFixed(1)}
+                            </span>
+                            <span>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 3px;">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                                    <line x1="16" y1="2" x2="16" y2="6"/>
+                                    <line x1="8" y1="2" x2="8" y2="6"/>
+                                    <line x1="3" y1="10" x2="21" y2="10"/>
+                                </svg>
+                                ${room.date}
+                            </span>
                             <span>#${room.id}</span>
                         </div>
                     </div>
