@@ -7,7 +7,7 @@
     const CACHE_TIMESTAMP_KEY = 'lockquests_timestamp';
     const CACHE_VERSION_KEY = 'lockquests_cache_version';
     const CACHE_DURATION = 10 * 60 * 1000; // 10 minutes
-    const CURRENT_VERSION = '1.1'; // Increment this to force cache refresh
+    const CURRENT_VERSION = '1.2'; // Increment this to force cache refresh
     
     // Check cache version
     const cachedVersion = localStorage.getItem(CACHE_VERSION_KEY);
@@ -59,39 +59,26 @@
             .replace(/^-+|-+$/g, '');
     }
     
-    async function getPhotoUrl(togetherNum, roomName) {
+    function getPhotoUrl(togetherNum, roomName) {
         const numPadded = String(togetherNum).padStart(4, '0');
         const slug = slugify(roomName);
-        
-        const jpgUrl = `photos/${numPadded}-${slug}.jpg`;
-        try {
-            const response = await fetch(jpgUrl, { method: 'HEAD' });
-            if (response.ok) return jpgUrl;
-        } catch (e) {}
-        
-        const JPGUrl = `photos/${numPadded}-${slug}.JPG`;
-        try {
-            const response = await fetch(JPGUrl, { method: 'HEAD' });
-            if (response.ok) return JPGUrl;
-        } catch (e) {}
-        
-        return null;
+        return `photos/${numPadded}-${slug}.jpg`;
     }
     
-    async function loadData() {
+    function loadData() {
         const cached = getCache();
         if (cached) {
-            await processData(cached);
+            processData(cached);
         } else {
             console.log('Fetching fresh data from Google Sheets');
             const url = `https://sheets.googleapis.com/v4/spreadsheets/${config.SHEET_ID}/values/${config.SHEET_RANGE}?key=${config.API_KEY}`;
             
             fetch(url)
                 .then(response => response.json())
-                .then(async data => {
+                .then(data => {
                     if (data.values) {
                         setCache(data.values);
-                        await processData(data.values);
+                        processData(data.values);
                     } else {
                         showError('No data found in sheet');
                     }
@@ -103,7 +90,7 @@
         }
     }
     
-    async function processData(sheetData) {
+    function processData(sheetData) {
         const headers = sheetData[0];
         const rows = sheetData.slice(1);
         
@@ -126,7 +113,7 @@
             const roomName = row[roomNameIdx] || 'Unknown Room';
             const company = row[companyIdx] || '';
             const state = row[stateIdx] || '';
-            const photoUrl = await getPhotoUrl(togetherNum, roomName);
+            const photoUrl = getPhotoUrl(togetherNum, roomName);
             
             allRooms.push({
                 id: togetherNum,
