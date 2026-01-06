@@ -253,7 +253,7 @@ body {
 .room-location {
     color: #999;
     font-size: 0.85em;
-    margin-bottom: 15px;
+    margin-bottom: 0;
 }
 
 .room-rating {
@@ -276,17 +276,34 @@ body {
     color: var(--lockquest-gray);
 }
 
+.room-meta-pill {
+    background: var(--lockquest-purple);
+    color: white;
+    padding: 10px 15px;
+    border-radius: 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    font-size: 0.85em;
+    font-weight: 600;
+    margin-top: 15px;
+}
+
+.room-meta-pill span {
+    white-space: nowrap;
+}
+
 .room-description {
     font-size: 0.9em;
-    color: #666;
-    line-height: 1.5;
-    margin: 8px 0 0 0;
+    color: #555;
+    line-height: 1.6;
+    margin: 12px 0 0 0;
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-height: 4.5em; /* 3 lines at 1.5em each */
 }
 
 /* Room Page Styles */
