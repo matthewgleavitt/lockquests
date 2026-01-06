@@ -467,14 +467,6 @@
                     states,
                     companies
                 });
-                
-            } catch (error) {
-                console.error('Error fetching stats:', error);
-                document.getElementById('loading').innerHTML = `
-                    <p>Error loading stats: ${error.message}</p>
-                    <p style="font-size: 0.9em; color: #999;">This could be a temporary API rate limit. Wait a few minutes and refresh.</p>
-                `;
-            }
         }
 
         function renderStats(stats) {
