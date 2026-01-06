@@ -260,10 +260,10 @@ body {
     display: inline-block;
     background: var(--lockquest-purple);
     color: white;
-    padding: 5px 15px;
+    padding: 4px 12px;
     border-radius: 20px;
     font-weight: bold;
-    font-size: 0.9em;
+    font-size: 0.85em;
 }
 
 .room-meta {
@@ -280,13 +280,13 @@ body {
     font-size: 0.9em;
     color: #666;
     line-height: 1.5;
-    margin: 12px 0 0 0;
+    margin: 8px 0 0 0;
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
-    min-height: 63px; /* 3 lines at 21px each to keep cards same height */
+    max-height: 4.5em; /* 3 lines at 1.5em each */
 }
 
 /* Room Page Styles */
