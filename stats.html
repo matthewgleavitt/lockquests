@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stats - Lock Quests</title>
+    <title>Stats - The Lock Quest Monsters</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
@@ -69,7 +69,7 @@
         .stat-card {
             background: white;
             border-radius: 15px;
-            padding: 25px;
+            padding: 20px;
             box-shadow: 0 5px 20px rgba(0,0,0,0.1);
             text-align: center;
             transition: all 0.3s ease;
@@ -87,7 +87,7 @@
             font-family: 'Bebas Neue', sans-serif;
             font-size: 1.4em;
             color: #3F3B52;
-            margin: 0 0 15px;
+            margin: 0 0 12px;
             letter-spacing: 1px;
         }
 
@@ -96,7 +96,7 @@
             font-size: 4em;
             color: #3F3B52;
             line-height: 1;
-            margin: 15px 0;
+            margin: 12px 0;
         }
 
         .stat-label {
@@ -110,26 +110,36 @@
         .milestone-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-            gap: 12px;
-            margin-top: 15px;
+            gap: 10px;
+            margin-top: 12px;
         }
 
         .milestone-badge {
             background: linear-gradient(135deg, #3F3B52, #5a5669);
             color: white;
-            padding: 12px 8px;
+            padding: 10px 8px;
             border-radius: 10px;
             font-family: 'Bebas Neue', sans-serif;
             font-size: 1.5em;
             letter-spacing: 1px;
             box-shadow: 0 3px 10px rgba(63, 59, 82, 0.3);
         }
+        
+        .milestone-details {
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 0.4em;
+            margin-top: 5px;
+            opacity: 0.9;
+            line-height: 1.4;
+            font-weight: 400;
+            letter-spacing: 0;
+        }
 
         .section-header {
             background: white;
-            padding: 20px 25px;
+            padding: 18px 22px;
             border-radius: 15px;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             border-bottom: 6px solid #3F3B52;
         }
@@ -145,13 +155,13 @@
         .location-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 15px;
-            margin-bottom: 40px;
+            gap: 12px;
+            margin-bottom: 35px;
         }
 
         .location-card {
             background: white;
-            padding: 20px;
+            padding: 18px;
             border-radius: 10px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             display: flex;
@@ -257,12 +267,25 @@
 <body>
     <header class="site-header">
         <div class="header-content">
-            <a href="index.html" class="logo">Lock Quests</a>
-            <nav class="nav">
-                <a href="index.html">All Rooms</a>
-                <a href="stats.html">Stats</a>
-                <a href="about.html">About</a>
-            </nav>
+            <a href="index.html" class="logo">The Lock Quest Monsters</a>
+            <div class="header-right">
+                <nav class="nav">
+                    <a href="index.html">All Escapes</a>
+                    <a href="about.html">About</a>
+                    <a href="stats.html">Stats</a>
+                </nav>
+                <div class="social-icons">
+                    <a href="https://www.facebook.com/TheLockQuestMonsters/" target="_blank" class="social-icon" aria-label="Facebook">
+                        <svg fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                    </a>
+                    <a href="https://www.instagram.com/thelockquestmonsters/" target="_blank" class="social-icon" aria-label="Instagram">
+                        <svg fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678c-3.405 0-6.162 2.76-6.162 6.162 0 3.405 2.76 6.162 6.162 6.162 3.405 0 6.162-2.76 6.162-6.162 0-3.405-2.76-6.162-6.162-6.162zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405c0 .795-.646 1.44-1.44 1.44-.795 0-1.44-.646-1.44-1.44 0-.794.646-1.439 1.44-1.439.793-.001 1.44.645 1.44 1.439z"/></svg>
+                    </a>
+                    <a href="https://morty.app/@TheLockQuestMonsters" target="_blank" class="social-icon" aria-label="Morty" style="font-size: 20px;">
+                        📱
+                    </a>
+                </div>
+            </div>
         </div>
     </header>
 
@@ -325,12 +348,6 @@
                 <h2>📍 By Location</h2>
             </div>
             <div class="location-grid" id="location-grid"></div>
-
-            <!-- Highest Rated Companies -->
-            <div class="section-header">
-                <h2>⭐ Highest Rated Companies (4.25+ Average)</h2>
-            </div>
-            <div class="chart-container" id="companies-chart"></div>
         </div>
     </div>
 
@@ -343,7 +360,7 @@
         const CACHE_TIMESTAMP_KEY = 'lockquests_stats_timestamp';
         const CACHE_VERSION_KEY = 'lockquests_cache_version';
         const CACHE_DURATION = 10 * 60 * 1000; // 10 minutes
-        const CURRENT_VERSION = '1.0'; // Increment this to force cache refresh
+        const CURRENT_VERSION = '1.1'; // Increment this to force cache refresh
         
         // Check cache version
         const cachedVersion = localStorage.getItem(CACHE_VERSION_KEY);
@@ -437,6 +454,9 @@
                 const mattRoomsWithNames = [];
                 const mikeRoomsWithNames = [];
                 const togetherRoomsWithNames = [];
+                const matt5StarRooms = [];
+                const mike5StarRooms = [];
+                const together5StarRooms = [];
                 let matt5Stars = 0;
                 let mike5Stars = 0;
                 let together5Stars = 0;
@@ -458,21 +478,30 @@
                         const num = parseInt(row[mattUniqueIdx]);
                         mattRooms.add(num);
                         mattRoomsWithNames.push({ number: num, room: roomName, company, location, state });
-                        if (parseFloat(row[mattRatingIdx]) === 5.0) matt5Stars++;
+                        if (parseFloat(row[mattRatingIdx]) === 5.0) {
+                            matt5Stars++;
+                            matt5StarRooms.push({ number: num, room: roomName, company, location, state });
+                        }
                     }
                     
                     if (row[mikeUniqueIdx]) {
                         const num = parseInt(row[mikeUniqueIdx]);
                         mikeRooms.add(num);
                         mikeRoomsWithNames.push({ number: num, room: roomName, company, location, state });
-                        if (parseFloat(row[mikeRatingIdx]) === 5.0) mike5Stars++;
+                        if (parseFloat(row[mikeRatingIdx]) === 5.0) {
+                            mike5Stars++;
+                            mike5StarRooms.push({ number: num, room: roomName, company, location, state });
+                        }
                     }
                     
                     if (row[togetherIdx]) {
                         const num = parseInt(row[togetherIdx]);
                         togetherRooms.add(num);
                         togetherRoomsWithNames.push({ number: num, room: roomName, company, location, state });
-                        if (parseFloat(row[avgRatingIdx]) === 5.0) together5Stars++;
+                        if (parseFloat(row[avgRatingIdx]) === 5.0) {
+                            together5Stars++;
+                            together5StarRooms.push({ number: num, room: roomName, company, location, state });
+                        }
                         
                         // Only count states and companies for Together rooms
                         if (row[stateIdx]) {
@@ -493,14 +522,17 @@
                     }
                 });
                 
-                // Get milestone room names
+                // Get milestone room names with company and location
                 const getMilestones = (roomsArray) => {
                     const milestones = [];
                     for (let i = 100; i <= Math.floor(roomsArray.length / 100) * 100; i += 100) {
                         const room = roomsArray.find(r => r.number === i);
                         milestones.push({
                             number: i,
-                            room: room ? room.room : ''
+                            room: room ? room.room : '',
+                            company: room ? room.company : '',
+                            location: room ? room.location : '',
+                            state: room ? room.state : ''
                         });
                     }
                     return milestones;
@@ -510,16 +542,19 @@
                     matt: { 
                         total: mattRooms.size, 
                         fiveStars: matt5Stars,
+                        fiveStarRooms: matt5StarRooms,
                         milestones: getMilestones(mattRoomsWithNames)
                     },
                     mike: { 
                         total: mikeRooms.size, 
                         fiveStars: mike5Stars,
+                        fiveStarRooms: mike5StarRooms,
                         milestones: getMilestones(mikeRoomsWithNames)
                     },
                     together: { 
                         total: togetherRooms.size, 
                         fiveStars: together5Stars,
+                        fiveStarRooms: together5StarRooms,
                         milestones: getMilestones(togetherRoomsWithNames)
                     },
                     states,
@@ -532,15 +567,30 @@
             document.getElementById('heroTotalRooms').textContent = stats.together.total;
             document.getElementById('heroTotalStates').textContent = Object.keys(stats.states).length;
             
-            // Personal Stats
+            // Personal Stats with 5-star room lists
+            const render5StarList = (rooms) => {
+                if (rooms.length === 0) return '<div style="font-size: 0.9em; color: #999; margin-top: 10px;">No 5-star rooms yet!</div>';
+                return `
+                    <div style="margin-top: 15px; text-align: left; max-height: 300px; overflow-y: auto;">
+                        ${rooms.map(r => `
+                            <a href="room.html?id=${r.number}" style="display: block; padding: 8px; margin: 5px 0; background: #f5f5f5; border-radius: 5px; text-decoration: none; color: #333; font-size: 0.75em; line-height: 1.3; transition: background 0.2s;">
+                                <strong>${r.room}</strong><br>
+                                <span style="color: #666; font-size: 0.95em;">[${r.company}] - ${r.location}</span>
+                            </a>
+                        `).join('')}
+                    </div>
+                `;
+            };
+            
             const personalHtml = `
                 <div class="stat-card">
                     <h3>👤 Matt</h3>
                     <div class="stat-number">${stats.matt.total}</div>
                     <div class="stat-label">Total Rooms</div>
-                    <div style="margin-top: 20px;">
+                    <div style="margin-top: 15px;">
                         <div class="stat-number" style="font-size: 2.5em;">${stats.matt.fiveStars}</div>
                         <div class="stat-label">5-Star Ratings</div>
+                        ${render5StarList(stats.matt.fiveStarRooms)}
                     </div>
                 </div>
                 
@@ -548,9 +598,10 @@
                     <h3>👤 Mike</h3>
                     <div class="stat-number">${stats.mike.total}</div>
                     <div class="stat-label">Total Rooms</div>
-                    <div style="margin-top: 20px;">
+                    <div style="margin-top: 15px;">
                         <div class="stat-number" style="font-size: 2.5em;">${stats.mike.fiveStars}</div>
                         <div class="stat-label">5-Star Ratings</div>
+                        ${render5StarList(stats.mike.fiveStarRooms)}
                     </div>
                 </div>
                 
@@ -558,9 +609,10 @@
                     <h3>👥 Together</h3>
                     <div class="stat-number">${stats.together.total}</div>
                     <div class="stat-label">Total Rooms</div>
-                    <div style="margin-top: 20px;">
+                    <div style="margin-top: 15px;">
                         <div class="stat-number" style="font-size: 2.5em;">${stats.together.fiveStars}</div>
                         <div class="stat-label">5-Star Ratings</div>
+                        ${render5StarList(stats.together.fiveStarRooms)}
                     </div>
                 </div>
             `;
@@ -574,7 +626,7 @@
                         ${stats.matt.milestones.map(m => `
                             <div class="milestone-badge">
                                 #${m.number}
-                                ${m.room ? `<div style="font-size: 0.55em; margin-top: 5px; opacity: 0.9; line-height: 1.3;">${m.room}<br>[${m.company}]<br>${m.location}</div>` : ''}
+                                ${m.room ? `<div class="milestone-details">${m.room}<br>[${m.company}]<br>${m.location}</div>` : ''}
                             </div>
                         `).join('')}
                     </div>
@@ -586,7 +638,7 @@
                         ${stats.mike.milestones.map(m => `
                             <div class="milestone-badge">
                                 #${m.number}
-                                ${m.room ? `<div style="font-size: 0.55em; margin-top: 5px; opacity: 0.9; line-height: 1.3;">${m.room}<br>[${m.company}]<br>${m.location}</div>` : ''}
+                                ${m.room ? `<div class="milestone-details">${m.room}<br>[${m.company}]<br>${m.location}</div>` : ''}
                             </div>
                         `).join('')}
                     </div>
@@ -598,7 +650,7 @@
                         ${stats.together.milestones.map(m => `
                             <div class="milestone-badge">
                                 #${m.number}
-                                ${m.room ? `<div style="font-size: 0.55em; margin-top: 5px; opacity: 0.9; line-height: 1.3;">${m.room}<br>[${m.company}]<br>${m.location}</div>` : ''}
+                                ${m.room ? `<div class="milestone-details">${m.room}<br>[${m.company}]<br>${m.location}</div>` : ''}
                             </div>
                         `).join('')}
                     </div>
@@ -615,39 +667,6 @@
                 </a>
             `).join('');
             document.getElementById('location-grid').innerHTML = locationsHtml;
-            
-            // Highest Rated Companies - only companies with 4.25+ average
-            const companiesWithRatings = Object.entries(stats.companies)
-                .map(([company, data]) => ({
-                    company,
-                    avgRating: data.totalRating / data.count,
-                    count: data.count
-                }))
-                .filter(c => c.avgRating >= 4.25)
-                .sort((a, b) => b.avgRating - a.avgRating)
-                .slice(0, 15);
-            
-            if (companiesWithRatings.length > 0) {
-                const maxRating = 5.0; // Always scale to 5 stars
-                
-                const companiesHtml = companiesWithRatings.map(({company, avgRating, count}) => {
-                    const percentage = (avgRating / maxRating) * 100;
-                    return `
-                        <a href="index.html?company=${encodeURIComponent(company)}" style="text-decoration: none; color: inherit; display: block; margin-bottom: 20px;">
-                            <div class="chart-label">
-                                <span>${company} (${count} rooms)</span>
-                                <span>⭐ ${avgRating.toFixed(2)}</span>
-                            </div>
-                            <div class="bar-container">
-                                <div class="bar-fill" style="width: ${percentage}%"></div>
-                            </div>
-                        </a>
-                    `;
-                }).join('');
-                document.getElementById('companies-chart').innerHTML = companiesHtml;
-            } else {
-                document.getElementById('companies-chart').innerHTML = '<p style="text-align: center; color: #666;">No companies with 4.25+ average rating yet!</p>';
-            }
             
             // Show content, hide loading
             document.getElementById('loading').style.display = 'none';
