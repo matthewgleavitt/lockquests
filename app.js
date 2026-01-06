@@ -7,7 +7,7 @@
     const CACHE_TIMESTAMP_KEY = 'lockquests_timestamp';
     const CACHE_VERSION_KEY = 'lockquests_cache_version';
     const CACHE_DURATION = 10 * 60 * 1000; // 10 minutes
-    const CURRENT_VERSION = '1.3'; // Increment this to force cache refresh
+    const CURRENT_VERSION = '1.4'; // Increment this to force cache refresh
     
     // Check cache version
     const cachedVersion = localStorage.getItem(CACHE_VERSION_KEY);
@@ -138,6 +138,9 @@
         // Populate filter dropdowns
         populateFilters(states, companies);
         
+        // Update quick stats
+        updateQuickStats(allRooms.length, states, companies);
+        
         // Apply URL filters or show all
         applyFilters();
         
@@ -167,6 +170,26 @@
         if (params.get('state')) stateFilter.value = params.get('state');
         if (params.get('company')) companyFilter.value = params.get('company');
         if (params.get('rating')) document.getElementById('ratingFilter').value = params.get('rating');
+    }
+    
+    function updateQuickStats(totalRooms, states, companies) {
+        document.getElementById('totalRooms').textContent = totalRooms;
+        document.getElementById('totalStates').textContent = states.size;
+        document.getElementById('totalCompanies').textContent = companies.size;
+        
+        // Count unique countries from states
+        const countries = new Set();
+        states.forEach(state => {
+            // Simple country detection
+            if (state.includes('Canada') || state === 'Ontario' || state === 'Quebec') {
+                countries.add('Canada');
+            } else if (state === 'England' || state === 'UK') {
+                countries.add('UK');
+            } else {
+                countries.add('USA');
+            }
+        });
+        document.getElementById('totalCountries').textContent = countries.size;
     }
     
     function applyFilters() {
@@ -224,10 +247,12 @@
                         <div class="room-title">${room.name}</div>
                         <div class="room-company">${room.company}</div>
                         <div class="room-location">${room.location}, ${room.state}</div>
-                        <div class="room-rating">⭐ ${room.rating.toFixed(1)}</div>
                         ${room.description ? `<div class="room-description">${room.description}</div>` : ''}
                         <div class="room-meta">
-                            <span>📅 ${room.date}</span>
+                            <div style="display: flex; gap: 10px; align-items: center;">
+                                <div class="room-rating">⭐ ${room.rating.toFixed(1)}</div>
+                                <span>📅 ${room.date}</span>
+                            </div>
                             <span>#${room.id}</span>
                         </div>
                     </div>
