@@ -176,6 +176,8 @@ body {
     text-decoration: none;
     color: inherit;
     display: block;
+    position: relative;
+    border-bottom: 4px solid var(--lockquest-purple);
 }
 
 .room-card:hover {
@@ -274,6 +276,19 @@ body {
     color: var(--lockquest-gray);
 }
 
+.room-description {
+    font-size: 0.9em;
+    color: #666;
+    line-height: 1.5;
+    margin: 12px 0 0 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-height: 63px; /* 3 lines at 21px each to keep cards same height */
+}
+
 /* Room Page Styles */
 .room-header {
     background: white;
@@ -281,6 +296,7 @@ body {
     border-radius: 10px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     margin-bottom: 30px;
+    border-top: 4px solid var(--lockquest-purple);
 }
 
 .room-header .room-title {
@@ -308,6 +324,7 @@ body {
     overflow: hidden;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     margin-bottom: 30px;
+    border-top: 4px solid var(--lockquest-purple);
 }
 
 .image-placeholder {
@@ -353,6 +370,7 @@ body {
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     margin-bottom: 30px;
     text-align: center;
+    border-top: 4px solid var(--lockquest-purple);
 }
 
 .rating-score {
@@ -415,6 +433,7 @@ body {
     border-radius: 10px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     margin-bottom: 30px;
+    border-top: 4px solid var(--lockquest-purple);
 }
 
 .room-details table {
