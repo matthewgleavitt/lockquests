@@ -7,7 +7,10 @@
     const CACHE_TIMESTAMP_KEY = 'lockquests_timestamp';
     const CACHE_VERSION_KEY = 'lockquests_cache_version';
     const CACHE_DURATION = 10 * 60 * 1000; // 10 minutes
-    const CURRENT_VERSION = '1.9'; // Increment this to force cache refresh
+    const CURRENT_VERSION = '1.11'; // Increment this to force cache refresh
+    
+    // Mobile detection
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
     
     // Check cache version
     const cachedVersion = localStorage.getItem(CACHE_VERSION_KEY);
