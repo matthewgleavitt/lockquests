@@ -9,7 +9,7 @@
     const CACHE_TIMESTAMP_KEY = 'lockquests_timestamp';
     const CACHE_VERSION_KEY = 'lockquests_cache_version';
     const CACHE_DURATION = 10 * 60 * 1000; // 10 minutes
-    const CURRENT_VERSION = '1.2'; // Increment this to force cache refresh
+    const CURRENT_VERSION = '1.5'; // Increment this to force cache refresh
     
     // Check cache version
     const cachedVersion = localStorage.getItem(CACHE_VERSION_KEY);
@@ -114,7 +114,8 @@
             mikeRating: headers.indexOf('Mike Rating'),
             avgRating: headers.indexOf('Average Rating'),
             escapees: headers.indexOf('Escapees'),
-            together: headers.indexOf('Together Unique #')
+            together: headers.indexOf('Together Unique #'),
+            description: headers.indexOf('Description')
         };
         
         for (const row of rows) {
@@ -131,7 +132,8 @@
                     mattRating: parseFloat(row[colIndices.mattRating]) || 0,
                     mikeRating: parseFloat(row[colIndices.mikeRating]) || 0,
                     avgRating: parseFloat(row[colIndices.avgRating]) || 0,
-                    escapees: row[colIndices.escapees] || ''
+                    escapees: row[colIndices.escapees] || '',
+                    description: row[colIndices.description] || ''
                 };
             }
         }
@@ -156,6 +158,10 @@
         document.getElementById('mikeBar').style.width = `${(room.mikeRating / 5) * 100}%`;
         
         // Update details
+        document.getElementById('detailCompany').textContent = room.company;
+        document.getElementById('detailCompany').href = `index.html?company=${encodeURIComponent(room.company)}`;
+        document.getElementById('detailName').textContent = room.name;
+        document.getElementById('detailLocation').textContent = `${room.location}, ${room.state}`;
         document.getElementById('detailDate').textContent = room.date;
         document.getElementById('detailTime').textContent = room.timeLeft || 'N/A';
         document.getElementById('detailEscapees').textContent = room.escapees || 'N/A';
@@ -170,40 +176,21 @@
         `;
         document.getElementById('roomTags').innerHTML = tagsHtml;
         
-        // Update photo
+        // Update description
+        const descElement = document.getElementById('roomDescription');
+        if (room.description) {
+            descElement.textContent = room.description;
+        } else {
+            descElement.textContent = 'No description available.';
+        }
+        
+        // Update photo - just set URL directly
         const photoContainer = document.getElementById('roomPhoto');
         const numPadded = String(room.id).padStart(4, '0');
         const slug = slugify(room.name);
+        const photoUrl = `photos/${numPadded}-${slug}.jpg`;
         
-        async function loadPhoto() {
-            // Try .jpg first
-            let photoUrl = `photos/${numPadded}-${slug}.jpg`;
-            try {
-                const response = await fetch(photoUrl, { method: 'HEAD' });
-                if (!response.ok) {
-                    // Try .JPG
-                    photoUrl = `photos/${numPadded}-${slug}.JPG`;
-                    const response2 = await fetch(photoUrl, { method: 'HEAD' });
-                    if (!response2.ok) {
-                        photoUrl = null;
-                    }
-                }
-            } catch (e) {
-                photoUrl = null;
-            }
-            
-            if (photoUrl) {
-                photoContainer.innerHTML = `<img src="${photoUrl}" alt="${room.name}">`;
-            } else {
-                photoContainer.innerHTML = `
-                    <div class="image-placeholder-text">
-                        <div class="image-number">#${numPadded}</div>
-                        <div>Photo: ${numPadded}-${slug}.jpg</div>
-                    </div>
-                `;
-            }
-        }
-        loadPhoto();
+        photoContainer.innerHTML = `<img src="${photoUrl}" alt="${room.name}" onerror="this.parentElement.innerHTML='<div class=\\'image-placeholder-text\\'><div class=\\'image-number\\'>#${numPadded}</div><div>Photo: ${numPadded}-${slug}.jpg</div></div>'">`;
         
         // Update navigation
         document.getElementById('navNumber').textContent = room.id;
