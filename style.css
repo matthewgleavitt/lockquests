@@ -293,7 +293,7 @@ body {
     gap: 15px;
     font-size: 0.85em;
     font-weight: 600;
-    margin-top: auto;
+    margin-top: 12px;
 }
 
 .room-meta-pill span {

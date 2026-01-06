@@ -360,7 +360,7 @@
         const CACHE_TIMESTAMP_KEY = 'lockquests_stats_timestamp';
         const CACHE_VERSION_KEY = 'lockquests_cache_version';
         const CACHE_DURATION = 10 * 60 * 1000; // 10 minutes
-        const CURRENT_VERSION = '1.1'; // Increment this to force cache refresh
+        const CURRENT_VERSION = '1.0'; // Increment this to force cache refresh
         
         // Check cache version
         const cachedVersion = localStorage.getItem(CACHE_VERSION_KEY);
@@ -687,16 +687,31 @@
     <!-- Mobile Bottom Navigation -->
     <nav class="mobile-nav">
         <a href="index.html" class="mobile-nav-item">
-            <div class="mobile-nav-icon">🔑</div>
-            <div class="mobile-nav-label">Rooms</div>
-        </a>
-        <a href="stats.html" class="mobile-nav-item active">
-            <div class="mobile-nav-icon">📊</div>
-            <div class="mobile-nav-label">Stats</div>
+            <div class="mobile-nav-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/>
+                </svg>
+            </div>
+            <div class="mobile-nav-label">Escapes</div>
         </a>
         <a href="about.html" class="mobile-nav-item">
-            <div class="mobile-nav-icon">👥</div>
+            <div class="mobile-nav-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                    <circle cx="12" cy="7" r="4"/>
+                </svg>
+            </div>
             <div class="mobile-nav-label">About</div>
+        </a>
+        <a href="stats.html" class="mobile-nav-item active">
+            <div class="mobile-nav-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="20" x2="18" y2="10"/>
+                    <line x1="12" y1="20" x2="12" y2="4"/>
+                    <line x1="6" y1="20" x2="6" y2="14"/>
+                </svg>
+            </div>
+            <div class="mobile-nav-label">Stats</div>
         </a>
     </nav>
 </body>
