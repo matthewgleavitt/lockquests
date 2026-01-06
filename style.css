@@ -175,9 +175,11 @@ body {
     cursor: pointer;
     text-decoration: none;
     color: inherit;
-    display: block;
+    display: flex;
+    flex-direction: column;
     position: relative;
     border-bottom: 4px solid var(--lockquest-purple);
+    height: 100%;
 }
 
 .room-card:hover {
@@ -198,6 +200,7 @@ body {
     padding: 0;
     position: relative;
     overflow: hidden;
+    flex-shrink: 0;
 }
 
 .room-image img {
@@ -235,6 +238,9 @@ body {
 
 .room-content {
     padding: 20px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
 }
 
 .room-title {
@@ -287,7 +293,7 @@ body {
     gap: 15px;
     font-size: 0.85em;
     font-weight: 600;
-    margin-top: 15px;
+    margin-top: auto;
 }
 
 .room-meta-pill span {
@@ -298,12 +304,11 @@ body {
     font-size: 0.9em;
     color: #555;
     line-height: 1.6;
-    margin: 12px 0 0 0;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
+    margin: 12px 0;
+    flex: 1;
     overflow: hidden;
-    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
 }
 
 /* Room Page Styles */
