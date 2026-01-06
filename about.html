@@ -9,15 +9,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <style>
-        /* Particle Background */
-        .particle-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+        /* Hero Banner with Particle Background */
+        .about-hero {
             background: #1a1a1a;
-            z-index: -1;
+            color: white;
+            padding: 80px 20px;
+            text-align: center;
+            position: relative;
+            margin-bottom: 40px;
             overflow: hidden;
         }
 
@@ -26,16 +25,6 @@
             background: #3F3B52;
             border-radius: 50%;
             pointer-events: none;
-        }
-
-        /* Hero Banner */
-        .about-hero {
-            background: #1a1a1a;
-            color: white;
-            padding: 80px 20px;
-            text-align: center;
-            position: relative;
-            margin-bottom: 40px;
         }
 
         .about-hero h1 {
@@ -230,44 +219,7 @@
                 flex-direction: column;
             }
         }
-    </style>
-</head>
-<body>
-    <!-- Particle Background -->
-    <div class="particle-bg" id="particleBg"></div>
 
-    <script>
-        // Generate floating particles
-        const particleBg = document.getElementById('particleBg');
-        const particleCount = 80;
-        
-        for (let i = 0; i < particleCount; i++) {
-            const particle = document.createElement('div');
-            particle.className = 'particle';
-            
-            // Random size between 2-6px
-            const size = Math.random() * 4 + 2;
-            particle.style.width = size + 'px';
-            particle.style.height = size + 'px';
-            
-            // Random horizontal position
-            particle.style.left = Math.random() * 100 + '%';
-            
-            // Start below viewport
-            particle.style.bottom = -(Math.random() * 50 + 100) + '%';
-            
-            // Random animation duration (20-40s)
-            const duration = Math.random() * 20 + 20;
-            particle.style.animation = `floatUp ${duration}s linear infinite`;
-            
-            // Random delay (negative to stagger)
-            particle.style.animationDelay = -(Math.random() * duration) + 's';
-            
-            particleBg.appendChild(particle);
-        }
-    </script>
-    
-    <style>
         @keyframes floatUp {
             0% {
                 transform: translateY(0);
@@ -285,6 +237,8 @@
             }
         }
     </style>
+</head>
+<body>
     <header class="site-header">
         <div class="header-content">
             <a href="index.html" class="logo">The Lock Quest Monsters</a>
@@ -310,10 +264,41 @@
     </header>
 
     <!-- Hero Banner with Particles -->
-    <div class="about-hero">
+    <div class="about-hero" id="heroSection">
         <h1>The Lock Quest Monsters</h1>
         <p>Two cryptids on a quest for the perfect escape</p>
     </div>
+
+    <script>
+        // Generate floating particles inside hero
+        const heroSection = document.getElementById('heroSection');
+        const particleCount = 80;
+        
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            
+            // Random size between 2-6px
+            const size = Math.random() * 4 + 2;
+            particle.style.width = size + 'px';
+            particle.style.height = size + 'px';
+            
+            // Random horizontal position
+            particle.style.left = Math.random() * 100 + '%';
+            
+            // Start below viewport
+            particle.style.bottom = -(Math.random() * 50 + 100) + '%';
+            
+            // Random animation duration (20-40s)
+            const duration = Math.random() * 20 + 20;
+            particle.style.animation = `floatUp ${duration}s linear infinite`;
+            
+            // Random delay (negative to stagger)
+            particle.style.animationDelay = -(Math.random() * duration) + 's';
+            
+            heroSection.appendChild(particle);
+        }
+    </script>
 
     <div class="container">
         <!-- Two Column Grid: Four Score Text (Left) + Hero Image (Right) -->
