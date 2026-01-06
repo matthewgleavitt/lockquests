@@ -313,7 +313,7 @@ body {
     border-radius: 10px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     margin-bottom: 30px;
-    border-top: 4px solid var(--lockquest-purple);
+    border-bottom: 4px solid var(--lockquest-purple);
 }
 
 .room-header .room-title {
@@ -353,7 +353,7 @@ body {
     overflow: hidden;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     margin-bottom: 30px;
-    border-top: 4px solid var(--lockquest-purple);
+    border-bottom: 4px solid var(--lockquest-purple);
 }
 
 .image-placeholder {
@@ -399,7 +399,7 @@ body {
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     margin-bottom: 30px;
     text-align: center;
-    border-top: 4px solid var(--lockquest-purple);
+    border-bottom: 4px solid var(--lockquest-purple);
 }
 
 .rating-score {
@@ -462,7 +462,7 @@ body {
     border-radius: 10px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     margin-bottom: 30px;
-    border-top: 4px solid var(--lockquest-purple);
+    border-bottom: 4px solid var(--lockquest-purple);
 }
 
 .room-details table {
@@ -542,10 +542,10 @@ body {
 .tag {
     background: var(--lockquest-purple);
     color: white;
-    padding: 10px 20px;
-    border-radius: 25px;
+    padding: 8px 16px;
+    border-radius: 20px;
     text-decoration: none;
-    font-size: 0.9em;
+    font-size: 0.85em;
     font-weight: 600;
     transition: all 0.3s;
     border: 2px solid var(--lockquest-purple);
@@ -568,6 +568,7 @@ body {
     font-size: 1.5em;
     color: var(--lockquest-gray);
     letter-spacing: 1px;
+    border-bottom: 4px solid var(--lockquest-purple);
 }
 
 .room-navigation strong {
