@@ -7,7 +7,7 @@
     const CACHE_TIMESTAMP_KEY = 'lockquests_timestamp';
     const CACHE_VERSION_KEY = 'lockquests_cache_version';
     const CACHE_DURATION = 10 * 60 * 1000; // 10 minutes
-    const CURRENT_VERSION = '1.4'; // Increment this to force cache refresh
+    const CURRENT_VERSION = '1.0'; // Increment this to force cache refresh
     
     // Check cache version
     const cachedVersion = localStorage.getItem(CACHE_VERSION_KEY);
@@ -177,18 +177,25 @@
         document.getElementById('totalStates').textContent = states.size;
         document.getElementById('totalCompanies').textContent = companies.size;
         
-        // Count unique countries from states
+        // Count unique countries from states/regions
+        const countryMap = {
+            'Attica': 'Greece',
+            'Lazio': 'Italy',
+            'Bermuda': 'Bermuda',
+            'Quebec': 'Canada',
+            'Mexico': 'Mexico'
+        };
+        
         const countries = new Set();
         states.forEach(state => {
-            // Simple country detection
-            if (state.includes('Canada') || state === 'Ontario' || state === 'Quebec') {
-                countries.add('Canada');
-            } else if (state === 'England' || state === 'UK') {
-                countries.add('UK');
+            if (countryMap[state]) {
+                countries.add(countryMap[state]);
             } else {
-                countries.add('USA');
+                // All other states are US states
+                countries.add('United States');
             }
         });
+        
         document.getElementById('totalCountries').textContent = countries.size;
     }
     
