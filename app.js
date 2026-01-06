@@ -7,7 +7,7 @@
     const CACHE_TIMESTAMP_KEY = 'lockquests_timestamp';
     const CACHE_VERSION_KEY = 'lockquests_cache_version';
     const CACHE_DURATION = 10 * 60 * 1000; // 10 minutes
-    const CURRENT_VERSION = '1.0'; // Increment this to force cache refresh
+    const CURRENT_VERSION = '1.8'; // Increment this to force cache refresh
     
     // Check cache version
     const cachedVersion = localStorage.getItem(CACHE_VERSION_KEY);
@@ -151,17 +151,31 @@
         const stateFilter = document.getElementById('stateFilter');
         const companyFilter = document.getElementById('companyFilter');
         
+        // Count rooms per state
+        const stateCounts = {};
+        states.forEach(state => {
+            stateCounts[state] = allRooms.filter(room => room.state === state).length;
+        });
+        
+        // Count rooms per company
+        const companyCounts = {};
+        companies.forEach(company => {
+            companyCounts[company] = allRooms.filter(room => room.company === company).length;
+        });
+        
+        // Populate state filter with counts
         Array.from(states).sort().forEach(state => {
             const option = document.createElement('option');
             option.value = state;
-            option.textContent = state;
+            option.textContent = `${state} (${stateCounts[state]})`;
             stateFilter.appendChild(option);
         });
         
+        // Populate company filter with counts
         Array.from(companies).sort().forEach(company => {
             const option = document.createElement('option');
             option.value = company;
-            option.textContent = company;
+            option.textContent = `${company} (${companyCounts[company]})`;
             companyFilter.appendChild(option);
         });
         
