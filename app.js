@@ -7,7 +7,7 @@
     const CACHE_TIMESTAMP_KEY = 'lockquests_timestamp';
     const CACHE_VERSION_KEY = 'lockquests_cache_version';
     const CACHE_DURATION = 10 * 60 * 1000; // 10 minutes
-    const CURRENT_VERSION = '1.5'; // Increment this to force cache refresh
+    const CURRENT_VERSION = '1.6'; // Increment this to force cache refresh
     
     // Check cache version
     const cachedVersion = localStorage.getItem(CACHE_VERSION_KEY);
@@ -252,14 +252,15 @@
                     <div class="room-image">${photoHtml}</div>
                     <div class="room-content">
                         <div class="room-title">${room.name}</div>
-                        <div class="room-company">${room.company}</div>
-                        <div class="room-location">${room.location}, ${room.state}</div>
-                        ${room.description ? `<div class="room-description">${room.description}</div>` : ''}
-                        <div class="room-meta">
-                            <div style="display: flex; gap: 10px; align-items: center;">
-                                <div class="room-rating">⭐ ${room.rating.toFixed(1)}</div>
-                                <span>📅 ${room.date}</span>
-                            </div>
+                        <div class="room-company">🏢 ${room.company}</div>
+                        <div class="room-location">📍 ${room.location}, ${room.state}</div>
+                        ${room.description ? `
+                            <hr style="border: none; border-top: 1px solid #eee; margin: 12px 0;">
+                            <div class="room-description">${room.description}</div>
+                        ` : '<hr style="border: none; border-top: 1px solid #eee; margin: 12px 0;">'}
+                        <div class="room-meta-pill">
+                            <span>⭐ ${room.rating.toFixed(1)}</span>
+                            <span>📅 ${room.date}</span>
                             <span>#${room.id}</span>
                         </div>
                     </div>
