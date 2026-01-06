@@ -9,7 +9,7 @@
     const CACHE_TIMESTAMP_KEY = 'lockquests_timestamp';
     const CACHE_VERSION_KEY = 'lockquests_cache_version';
     const CACHE_DURATION = 10 * 60 * 1000; // 10 minutes
-    const CURRENT_VERSION = '1.0'; // Increment this to force cache refresh
+    const CURRENT_VERSION = '1.1'; // Increment this to force cache refresh
     
     // Check cache version
     const cachedVersion = localStorage.getItem(CACHE_VERSION_KEY);
@@ -157,16 +157,10 @@
         document.getElementById('mattBar').style.width = `${(room.mattRating / 5) * 100}%`;
         document.getElementById('mikeBar').style.width = `${(room.mikeRating / 5) * 100}%`;
         
-        // Update details
-        document.getElementById('detailCompany').textContent = room.company;
-        document.getElementById('detailCompany').href = `index.html?company=${encodeURIComponent(room.company)}`;
-        document.getElementById('detailName').textContent = room.name;
-        document.getElementById('detailLocation').textContent = `${room.location}, ${room.state}`;
+        // Update details (only the fields that still exist)
         document.getElementById('detailDate').textContent = room.date;
         document.getElementById('detailTime').textContent = room.timeLeft || 'N/A';
         document.getElementById('detailEscapees').textContent = room.escapees || 'N/A';
-        document.getElementById('detailState').textContent = room.state;
-        document.getElementById('detailState').href = `index.html?state=${encodeURIComponent(room.state)}`;
         
         // Update tags with clickable links
         const tagsHtml = `
