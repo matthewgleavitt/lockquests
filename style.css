@@ -505,15 +505,15 @@ body {
     margin-bottom: 30px;
 }
 
-.room-description h3 {
+.room-details h3 {
     font-family: 'Bebas Neue', sans-serif;
     font-size: 1.8em;
     color: var(--lockquest-dark);
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     letter-spacing: 1px;
 }
 
-.room-description p {
+.room-details p {
     line-height: 1.8;
     color: #555;
 }
@@ -541,7 +541,7 @@ body {
 
 .tag {
     background: var(--lockquest-purple);
-    color: white;
+    color: white !important;
     padding: 8px 16px;
     border-radius: 20px;
     text-decoration: none;
@@ -549,6 +549,11 @@ body {
     font-weight: 600;
     transition: all 0.3s;
     border: 2px solid var(--lockquest-purple);
+}
+
+.tag svg {
+    stroke: white !important;
+    fill: white !important;
 }
 
 .tag:hover {
