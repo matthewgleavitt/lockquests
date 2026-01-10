@@ -7,7 +7,10 @@
     const CACHE_TIMESTAMP_KEY = 'lockquests_timestamp';
     const CACHE_VERSION_KEY = 'lockquests_cache_version';
     const CACHE_DURATION = 10 * 60 * 1000; // 10 minutes
-    const CURRENT_VERSION = '2.0'; // Increment this to force cache refresh
+    const CURRENT_VERSION = '2.2'; // Increment this to force cache refresh
+    
+    // Flag to prevent filter events during initialization
+    let isInitializing = true;
     
     // Mobile detection
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
@@ -152,6 +155,9 @@
         
         // Apply URL filters or show all
         applyFilters();
+        
+        // Mark initialization complete
+        isInitializing = false;
         
         document.getElementById('loadingContainer').style.display = 'none';
     }
@@ -354,11 +360,58 @@
         loading.innerHTML = `<p style="color: #e74c3c;">${message}</p>`;
     }
     
-    // Event listeners
-    document.getElementById('searchBox').addEventListener('input', applyFilters);
-    document.getElementById('stateFilter').addEventListener('change', applyFilters);
-    document.getElementById('companyFilter').addEventListener('change', applyFilters);
-    document.getElementById('ratingFilter').addEventListener('change', applyFilters);
+    // Event listeners - clear URL params when user manually changes filters
+    document.getElementById('searchBox').addEventListener('input', () => {
+        if (isInitializing) return;
+        // Clear genre/theme URL params when user searches
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('genre') || params.get('theme')) {
+            params.delete('genre');
+            params.delete('theme');
+            const newUrl = params.toString() ? `${window.location.pathname}?${params}` : window.location.pathname;
+            window.history.pushState({}, '', newUrl);
+        }
+        applyFilters();
+    });
+    
+    document.getElementById('stateFilter').addEventListener('change', () => {
+        if (isInitializing) return;
+        // Clear genre/theme URL params when user changes state filter
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('genre') || params.get('theme')) {
+            params.delete('genre');
+            params.delete('theme');
+            const newUrl = params.toString() ? `${window.location.pathname}?${params}` : window.location.pathname;
+            window.history.pushState({}, '', newUrl);
+        }
+        applyFilters();
+    });
+    
+    document.getElementById('companyFilter').addEventListener('change', () => {
+        if (isInitializing) return;
+        // Clear genre/theme URL params when user changes company filter
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('genre') || params.get('theme')) {
+            params.delete('genre');
+            params.delete('theme');
+            const newUrl = params.toString() ? `${window.location.pathname}?${params}` : window.location.pathname;
+            window.history.pushState({}, '', newUrl);
+        }
+        applyFilters();
+    });
+    
+    document.getElementById('ratingFilter').addEventListener('change', () => {
+        if (isInitializing) return;
+        // Clear genre/theme URL params when user changes rating filter
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('genre') || params.get('theme')) {
+            params.delete('genre');
+            params.delete('theme');
+            const newUrl = params.toString() ? `${window.location.pathname}?${params}` : window.location.pathname;
+            window.history.pushState({}, '', newUrl);
+        }
+        applyFilters();
+    });
     
     document.getElementById('clearFilters').addEventListener('click', () => {
         document.getElementById('searchBox').value = '';
