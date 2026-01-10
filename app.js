@@ -7,7 +7,7 @@
     const CACHE_TIMESTAMP_KEY = 'lockquests_timestamp';
     const CACHE_VERSION_KEY = 'lockquests_cache_version';
     const CACHE_DURATION = 10 * 60 * 1000; // 10 minutes
-    const CURRENT_VERSION = '1.8'; // Increment this to force cache refresh
+    const CURRENT_VERSION = '2.0'; // Increment this to force cache refresh
     
     // Mobile detection
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
@@ -233,6 +233,12 @@
         const genreFilter = params.get('genre');
         const themeFilter = params.get('theme');
         
+        // Debug logging
+        if (genreFilter || themeFilter) {
+            console.log('Filtering by:', { genreFilter, themeFilter });
+            console.log('Sample room genres/themes:', allRooms.slice(0, 3).map(r => ({ name: r.name, genre: r.genre, theme: r.theme })));
+        }
+        
         const filtered = allRooms.filter(room => {
             // Search
             if (search && !room.name.toLowerCase().includes(search) &&
@@ -265,6 +271,11 @@
             
             return true;
         });
+        
+        // Debug logging
+        if (genreFilter || themeFilter) {
+            console.log('Filtered results:', filtered.length);
+        }
         
         // Update page title if filtering by genre or theme
         if (genreFilter || themeFilter) {
