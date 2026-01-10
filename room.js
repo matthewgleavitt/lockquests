@@ -9,7 +9,7 @@
     const CACHE_TIMESTAMP_KEY = 'lockquests_timestamp';
     const CACHE_VERSION_KEY = 'lockquests_cache_version';
     const CACHE_DURATION = 10 * 60 * 1000; // 10 minutes
-    const CURRENT_VERSION = '1.1'; // Increment this to force cache refresh
+    const CURRENT_VERSION = '1.2'; // Increment this to force cache refresh
     
     // Check cache version
     const cachedVersion = localStorage.getItem(CACHE_VERSION_KEY);
@@ -115,7 +115,9 @@
             avgRating: headers.indexOf('Average Rating'),
             escapees: headers.indexOf('Escapees'),
             together: headers.indexOf('Together Unique #'),
-            description: headers.indexOf('Description')
+            description: headers.indexOf('Description'),
+            genre: headers.indexOf('Genre'),
+            theme: headers.indexOf('Theme')
         };
         
         for (const row of rows) {
@@ -133,7 +135,9 @@
                     mikeRating: parseFloat(row[colIndices.mikeRating]) || 0,
                     avgRating: parseFloat(row[colIndices.avgRating]) || 0,
                     escapees: row[colIndices.escapees] || '',
-                    description: row[colIndices.description] || ''
+                    description: row[colIndices.description] || '',
+                    genre: row[colIndices.genre] || '',
+                    theme: row[colIndices.theme] || ''
                 };
             }
         }
@@ -163,6 +167,28 @@
         document.getElementById('detailEscapees').textContent = room.escapees || 'N/A';
         
         // Update tags with clickable links
+        // Build genre tags (can have multiple separated by comma)
+        const genreTags = room.genre ? room.genre.split(',').map(g => g.trim()).filter(g => g).map(g => `
+            <a href="index.html?genre=${encodeURIComponent(g)}" class="tag tag-genre">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 5px;">
+                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                </svg>
+                ${g}
+            </a>
+        `).join('') : '';
+        
+        // Build theme tags (can have multiple separated by comma)
+        const themeTags = room.theme ? room.theme.split(',').map(t => t.trim()).filter(t => t).map(t => `
+            <a href="index.html?theme=${encodeURIComponent(t)}" class="tag tag-theme">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 5px;">
+                    <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/>
+                    <line x1="7" y1="7" x2="7.01" y2="7"/>
+                </svg>
+                ${t}
+            </a>
+        `).join('') : '';
+        
         const tagsHtml = `
             <a href="index.html?company=${encodeURIComponent(room.company)}" class="tag">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 5px;">
@@ -184,6 +210,8 @@
                 </svg>
                 ${room.avgRating.toFixed(1)}
             </a>
+            ${genreTags}
+            ${themeTags}
         `;
         document.getElementById('roomTags').innerHTML = tagsHtml;
         

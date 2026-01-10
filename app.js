@@ -7,7 +7,7 @@
     const CACHE_TIMESTAMP_KEY = 'lockquests_timestamp';
     const CACHE_VERSION_KEY = 'lockquests_cache_version';
     const CACHE_DURATION = 10 * 60 * 1000; // 10 minutes
-    const CURRENT_VERSION = '1.7'; // Increment this to force cache refresh
+    const CURRENT_VERSION = '1.8'; // Increment this to force cache refresh
     
     // Mobile detection
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
@@ -105,6 +105,8 @@
         const dateIdx = headers.indexOf('Date');
         const togetherIdx = headers.indexOf('Together Unique #');
         const descriptionIdx = headers.indexOf('Description');
+        const genreIdx = headers.indexOf('Genre');
+        const themeIdx = headers.indexOf('Theme');
         
         allRooms = [];
         const states = new Set();
@@ -118,6 +120,8 @@
             const company = row[companyIdx] || '';
             const state = row[stateIdx] || '';
             const photoUrl = getPhotoUrl(togetherNum, roomName);
+            const genre = row[genreIdx] || '';
+            const theme = row[themeIdx] || '';
             
             allRooms.push({
                 id: togetherNum,
@@ -128,7 +132,9 @@
                 rating: parseFloat(row[ratingIdx]) || 0,
                 date: row[dateIdx] || '',
                 photoUrl: photoUrl,
-                description: row[descriptionIdx] || ''
+                description: row[descriptionIdx] || '',
+                genre: genre,
+                theme: theme
             });
             
             if (state) states.add(state);
@@ -222,6 +228,11 @@
         const companyFilter = document.getElementById('companyFilter').value;
         const ratingFilter = document.getElementById('ratingFilter').value;
         
+        // Check URL for genre/theme filters
+        const params = new URLSearchParams(window.location.search);
+        const genreFilter = params.get('genre');
+        const themeFilter = params.get('theme');
+        
         const filtered = allRooms.filter(room => {
             // Search
             if (search && !room.name.toLowerCase().includes(search) &&
@@ -242,8 +253,24 @@
                 if (room.rating < minRating) return false;
             }
             
+            // Genre filter (check if room's genre contains the filter value)
+            if (genreFilter && !room.genre.toLowerCase().includes(genreFilter.toLowerCase())) {
+                return false;
+            }
+            
+            // Theme filter (check if room's theme contains the filter value)
+            if (themeFilter && !room.theme.toLowerCase().includes(themeFilter.toLowerCase())) {
+                return false;
+            }
+            
             return true;
         });
+        
+        // Update page title if filtering by genre or theme
+        if (genreFilter || themeFilter) {
+            const filterName = genreFilter || themeFilter;
+            document.title = `${filterName} Rooms - The Lock Quest Monsters`;
+        }
         
         displayRooms(filtered);
     }

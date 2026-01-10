@@ -159,6 +159,49 @@
             margin-bottom: 35px;
         }
 
+        .theme-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 15px;
+            margin-bottom: 35px;
+        }
+
+        .theme-card {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: all 0.3s;
+            border-bottom: 4px solid #3F3B52;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .theme-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(63, 59, 82, 0.3);
+        }
+
+        .theme-emoji {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .theme-name {
+            font-weight: 700;
+            color: #1a1a1a;
+            font-size: 1em;
+            margin-bottom: 5px;
+        }
+
+        .theme-count {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.8em;
+            color: #3F3B52;
+            letter-spacing: 1px;
+        }
+
         .location-card {
             background: white;
             padding: 18px;
@@ -348,6 +391,18 @@
                 <h2>📍 By Location</h2>
             </div>
             <div class="location-grid" id="location-grid"></div>
+            
+            <!-- Genres Section -->
+            <div class="section-header">
+                <h2>📚 Genres</h2>
+            </div>
+            <div class="theme-grid" id="genre-grid"></div>
+            
+            <!-- Themes Section -->
+            <div class="section-header">
+                <h2>🎭 Themes</h2>
+            </div>
+            <div class="theme-grid" id="theme-grid"></div>
         </div>
     </div>
 
@@ -360,7 +415,7 @@
         const CACHE_TIMESTAMP_KEY = 'lockquests_stats_timestamp';
         const CACHE_VERSION_KEY = 'lockquests_cache_version';
         const CACHE_DURATION = 10 * 60 * 1000; // 10 minutes
-        const CURRENT_VERSION = '1.0'; // Increment this to force cache refresh
+        const CURRENT_VERSION = '1.1'; // Increment this to force cache refresh
         
         // Check cache version
         const cachedVersion = localStorage.getItem(CACHE_VERSION_KEY);
@@ -442,6 +497,8 @@
                 const togetherIdx = headers.indexOf('Together Unique #');
                 const stateIdx = headers.indexOf('State/Region');
                 const companyIdx = headers.indexOf('Company');
+                const genreIdx = headers.indexOf('Genre');
+                const themeIdx = headers.indexOf('Theme');
                 
                 if (mattUniqueIdx === -1 || mikeUniqueIdx === -1 || togetherIdx === -1) {
                     throw new Error('Required columns not found in sheet');
@@ -462,6 +519,8 @@
                 let together5Stars = 0;
                 const states = {}; // Only count Together rooms
                 const companies = {}; // Only count Together rooms
+                const genres = {}; // Count genre occurrences
+                const themes = {}; // Count theme occurrences
                 
                 const roomNameIdx = headers.indexOf('Room Name');
                 const locationIdx = headers.indexOf('Location');
@@ -519,6 +578,26 @@
                             companies[companyName].totalRating += rating;
                             companies[companyName].ratings.push(rating);
                         }
+                        
+                        // Count genres (can have multiple separated by comma)
+                        if (row[genreIdx]) {
+                            const genreList = row[genreIdx].split(',').map(g => g.trim());
+                            genreList.forEach(genre => {
+                                if (genre) {
+                                    genres[genre] = (genres[genre] || 0) + 1;
+                                }
+                            });
+                        }
+                        
+                        // Count themes (can have multiple separated by comma)
+                        if (row[themeIdx]) {
+                            const themeList = row[themeIdx].split(',').map(t => t.trim());
+                            themeList.forEach(theme => {
+                                if (theme) {
+                                    themes[theme] = (themes[theme] || 0) + 1;
+                                }
+                            });
+                        }
                     }
                 });
                 
@@ -558,7 +637,9 @@
                         milestones: getMilestones(togetherRoomsWithNames)
                     },
                     states,
-                    companies
+                    companies,
+                    genres,
+                    themes
                 });
         }
 
@@ -667,6 +748,61 @@
                 </a>
             `).join('');
             document.getElementById('location-grid').innerHTML = locationsHtml;
+            
+            // Genre emoji mapping
+            const genreEmojis = {
+                'Horror': '👻',
+                'Mystery': '🔍',
+                'Fantasy': '🐉',
+                'Adventure': '🗺️',
+                'Pirate': '🏴‍☠️',
+                'Sci-Fi': '🚀',
+                'Spy': '🕵️',
+                'Historical': '📜',
+                'Western': '🌵'
+            };
+            
+            // Theme emoji mapping
+            const themeEmojis = {
+                'Heist': '💰',
+                'Supernatural': '👹',
+                'Laboratory': '🧪',
+                'Cabin': '🏚️',
+                'Disaster': '💥',
+                'School': '🎓',
+                'Prison': '🔒',
+                'Mansion': '🏛️',
+                'Museum': '🖼️',
+                'Underwater': '🌊',
+                'Egyptian': '🏺',
+                'Train': '🚂',
+                'Video Store': '📼',
+                'Cryptids': '👣',
+                'Speakeasy': '🥃',
+                'Casino': '🎰'
+            };
+            
+            // Genres with clickable links (sorted by count)
+            const sortedGenres = Object.entries(stats.genres).sort((a, b) => b[1] - a[1]);
+            const genresHtml = sortedGenres.map(([genre, count]) => `
+                <a href="index.html?genre=${encodeURIComponent(genre)}" class="theme-card">
+                    <div class="theme-emoji">${genreEmojis[genre] || '🎬'}</div>
+                    <div class="theme-name">${genre}</div>
+                    <div class="theme-count">${count}</div>
+                </a>
+            `).join('');
+            document.getElementById('genre-grid').innerHTML = genresHtml;
+            
+            // Themes with clickable links (sorted by count)
+            const sortedThemes = Object.entries(stats.themes).sort((a, b) => b[1] - a[1]);
+            const themesHtml = sortedThemes.map(([theme, count]) => `
+                <a href="index.html?theme=${encodeURIComponent(theme)}" class="theme-card">
+                    <div class="theme-emoji">${themeEmojis[theme] || '🏷️'}</div>
+                    <div class="theme-name">${theme}</div>
+                    <div class="theme-count">${count}</div>
+                </a>
+            `).join('');
+            document.getElementById('theme-grid').innerHTML = themesHtml;
             
             // Show content, hide loading
             document.getElementById('loading').style.display = 'none';
