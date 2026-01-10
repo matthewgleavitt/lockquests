@@ -7,7 +7,7 @@
     const CACHE_TIMESTAMP_KEY = 'lockquests_timestamp';
     const CACHE_VERSION_KEY = 'lockquests_cache_version';
     const CACHE_DURATION = 10 * 60 * 1000; // 10 minutes
-    const CURRENT_VERSION = '1.11'; // Increment this to force cache refresh
+    const CURRENT_VERSION = '1.7'; // Increment this to force cache refresh
     
     // Mobile detection
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
@@ -258,7 +258,7 @@
         
         grid.innerHTML = rooms.map(room => {
             const photoHtml = room.photoUrl 
-                ? `<img src="${room.photoUrl}" alt="${room.name}">`
+                ? `<img src="${room.photoUrl}" alt="${room.name}" loading="lazy">`
                 : `<div class="image-placeholder-text">
                        <div class="image-number">#${String(room.id).padStart(4, '0')}</div>
                        <div>Photo: ${String(room.id).padStart(4, '0')}-${slugify(room.name)}.jpg</div>

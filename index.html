@@ -58,6 +58,30 @@
             margin-top: 5px;
         }
         
+        /* Mobile: Keep stats on one row */
+        @media (max-width: 768px) {
+            .quick-stats {
+                gap: 15px;
+                padding: 15px 10px;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+            }
+            
+            .stat-item {
+                flex-shrink: 0;
+                min-width: 70px;
+            }
+            
+            .stat-number {
+                font-size: 1.8em;
+            }
+            
+            .stat-label {
+                font-size: 0.7em;
+                letter-spacing: 0.5px;
+            }
+        }
+        
         /* Sticky Filter Bar */
         .filter-container {
             position: sticky;

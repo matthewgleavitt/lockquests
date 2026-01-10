@@ -18,7 +18,7 @@ CANVAS_HEIGHT = 4800
 GRID_COLS = 10
 GRID_ROWS = 10
 BORDER_WIDTH = 6
-OUTER_PADDING = 6  # Padding around entire canvas edges
+OUTER_PADDING = 40  # Target padding around edges
 PHOTOS_PER_COLLAGE = 100
 TOTAL_COLLAGES = 6
 
@@ -30,11 +30,18 @@ PHOTOS_FOLDER = "."  # Current directory
 OUTPUT_FOLDER = "./collages"
 
 # Calculate photo dimensions
-# Subtract outer padding from both sides (left+right, top+bottom)
-available_width = CANVAS_WIDTH - (GRID_COLS - 1) * BORDER_WIDTH - (2 * OUTER_PADDING)
-available_height = CANVAS_HEIGHT - (GRID_ROWS - 1) * BORDER_WIDTH - (2 * OUTER_PADDING)
+available_width = CANVAS_WIDTH - (2 * OUTER_PADDING) - ((GRID_COLS - 1) * BORDER_WIDTH)
+available_height = CANVAS_HEIGHT - (2 * OUTER_PADDING) - ((GRID_ROWS - 1) * BORDER_WIDTH)
 photo_width = available_width // GRID_COLS
 photo_height = available_height // GRID_ROWS
+
+# Recalculate actual space used
+actual_grid_width = (photo_width * GRID_COLS) + ((GRID_COLS - 1) * BORDER_WIDTH)
+actual_grid_height = (photo_height * GRID_ROWS) + ((GRID_ROWS - 1) * BORDER_WIDTH)
+
+# Calculate exact padding to center the grid (ensures even padding on all sides)
+OUTER_PADDING_X = (CANVAS_WIDTH - actual_grid_width) // 2
+OUTER_PADDING_Y = (CANVAS_HEIGHT - actual_grid_height) // 2
 
 print(f"🎨 Lock Quest Monsters - Batch Collage Generator (FIXED)")
 print(f"=" * 60)
@@ -43,7 +50,7 @@ print(f"Canvas: {CANVAS_WIDTH}x{CANVAS_HEIGHT}")
 print(f"Grid: {GRID_ROWS}x{GRID_COLS} = {PHOTOS_PER_COLLAGE} photos per collage")
 print(f"Each photo: {photo_width}x{photo_height} (crop to fill)")
 print(f"Border: {BORDER_WIDTH}pt white between photos")
-print(f"Outer padding: {OUTER_PADDING}pt white around edges")
+print(f"Outer padding: {OUTER_PADDING_X}pt (horizontal) x {OUTER_PADDING_Y}pt (vertical)")
 print(f"Photos folder: {PHOTOS_FOLDER}")
 print(f"Output folder: {OUTPUT_FOLDER}")
 print()
@@ -111,9 +118,9 @@ for collage_num in range(1, TOTAL_COLLAGES + 1):
         row = position_in_collage // GRID_COLS
         col = position_in_collage % GRID_COLS
         
-        # Calculate pixel position with borders AND outer padding
-        x = OUTER_PADDING + col * (photo_width + BORDER_WIDTH)
-        y = OUTER_PADDING + row * (photo_height + BORDER_WIDTH)
+        # Calculate pixel position with borders AND exact centered padding
+        x = OUTER_PADDING_X + col * (photo_width + BORDER_WIDTH)
+        y = OUTER_PADDING_Y + row * (photo_height + BORDER_WIDTH)
         
         if i in all_photo_files:
             photo_path = all_photo_files[i]
