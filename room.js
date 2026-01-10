@@ -9,7 +9,7 @@
     const CACHE_TIMESTAMP_KEY = 'lockquests_timestamp';
     const CACHE_VERSION_KEY = 'lockquests_cache_version';
     const CACHE_DURATION = 10 * 60 * 1000; // 10 minutes
-    const CURRENT_VERSION = '1.3'; // Increment this to force cache refresh
+    const CURRENT_VERSION = '1.4'; // Increment this to force cache refresh
     
     // Check cache version
     const cachedVersion = localStorage.getItem(CACHE_VERSION_KEY);
@@ -137,7 +137,8 @@
                     escapees: row[colIndices.escapees] || '',
                     description: row[colIndices.description] || '',
                     genre: row[colIndices.genre] || '',
-                    theme: row[colIndices.theme] || ''
+                    theme: row[colIndices.theme] || '',
+                    totalRooms: totalRooms
                 };
             }
         }
@@ -263,9 +264,16 @@
         document.getElementById('prevBtn').href = `room.html?id=${room.id - 1}`;
         document.getElementById('nextBtn').href = `room.html?id=${room.id + 1}`;
         
+        // Disable Previous button on first room
         if (room.id <= 1) {
             document.getElementById('prevBtn').style.opacity = '0.5';
             document.getElementById('prevBtn').style.pointerEvents = 'none';
+        }
+        
+        // Disable Next button on last room
+        if (room.id >= room.totalRooms) {
+            document.getElementById('nextBtn').style.opacity = '0.5';
+            document.getElementById('nextBtn').style.pointerEvents = 'none';
         }
     }
     

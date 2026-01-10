@@ -69,13 +69,13 @@
                 </div>
 
                 <!-- Description -->
-                <div class="room-details">
+                <div class="room-details room-description-section">
                     <h3>Description</h3>
                     <p id="roomDescription">Loading description...</p>
                 </div>
 
                 <!-- Tags -->
-                <div class="room-details">
+                <div class="room-details room-tags-section">
                     <h3>Tagged In</h3>
                     <div id="roomTags" class="tag-list">
                         <span class="tag">Loading...</span>
@@ -85,6 +85,24 @@
 
             <!-- Right Column -->
             <div>
+                <!-- Room Info (Time/Escapees/Date) -->
+                <div class="room-details room-info-section">
+                    <table>
+                        <tr>
+                            <td><strong>Time Left</strong></td>
+                            <td id="detailTime">-</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Escapees</strong></td>
+                            <td id="detailEscapees">-</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Date Played</strong></td>
+                            <td id="detailDate">-</td>
+                        </tr>
+                    </table>
+                </div>
+
                 <!-- Rating Box -->
                 <div class="rating-box">
                     <div class="rating-score" id="overallRating">-</div>
@@ -108,24 +126,6 @@
                             <span class="rating-value" id="mattRating">-</span>
                         </div>
                     </div>
-                </div>
-
-                <!-- Room Details -->
-                <div class="room-details">
-                    <table>
-                        <tr>
-                            <td><strong>Time Left</strong></td>
-                            <td id="detailTime">-</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Escapees</strong></td>
-                            <td id="detailEscapees">-</td>
-                        </tr>
-                        <tr>
-                            <td><strong>Date Played</strong></td>
-                            <td id="detailDate">-</td>
-                        </tr>
-                    </table>
                 </div>
 
                 <!-- Navigation -->

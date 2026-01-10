@@ -655,24 +655,37 @@ body {
     }
     
     /* Reorder room page on mobile */
+    .content-grid {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .content-grid > div {
+        display: contents;
+    }
+    
     .featured-image {
         order: 1;
     }
     
-    .rating-box {
+    .room-description-section {
         order: 2;
     }
     
-    .room-details {
+    .room-info-section {
         order: 3;
     }
     
-    .tags-section {
+    .rating-box {
         order: 4;
     }
     
-    .room-navigation {
+    .room-tags-section {
         order: 5;
+    }
+    
+    .room-navigation {
+        order: 6;
     }
     
     /* Make room images landscape */
