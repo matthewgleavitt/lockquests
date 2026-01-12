@@ -147,7 +147,29 @@
     
     function updatePage(room) {
         // Update title and meta
-        document.title = `${room.name} - Lock Quests`;
+        const pageTitle = `${room.name} - ${room.company} | Lock Quests`;
+        const pageDescription = room.description 
+            ? `${room.description.substring(0, 155)}...` 
+            : `${room.name} escape room at ${room.company} in ${room.location}, ${room.state}. Rated ${room.avgRating.toFixed(1)}/5 by The Lock Quest Monsters.`;
+        
+        document.title = pageTitle;
+        
+        // Update meta description
+        const metaDesc = document.getElementById('metaDescription');
+        if (metaDesc) metaDesc.setAttribute('content', pageDescription);
+        
+        // Update Open Graph tags
+        const ogTitle = document.getElementById('ogTitle');
+        if (ogTitle) ogTitle.setAttribute('content', pageTitle);
+        const ogDesc = document.getElementById('ogDescription');
+        if (ogDesc) ogDesc.setAttribute('content', pageDescription);
+        
+        // Update Twitter tags
+        const twitterTitle = document.getElementById('twitterTitle');
+        if (twitterTitle) twitterTitle.setAttribute('content', pageTitle);
+        const twitterDesc = document.getElementById('twitterDescription');
+        if (twitterDesc) twitterDesc.setAttribute('content', pageDescription);
+        
         document.getElementById('roomTitle').textContent = room.name;
         document.getElementById('roomCompany').textContent = room.company;
         document.getElementById('roomCompany').href = `index.html?company=${encodeURIComponent(room.company)}`;
