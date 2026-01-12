@@ -473,7 +473,7 @@
         const CACHE_TIMESTAMP_KEY = 'lockquests_stats_timestamp';
         const CACHE_VERSION_KEY = 'lockquests_cache_version';
         const CACHE_DURATION = 10 * 60 * 1000; // 10 minutes
-        const CURRENT_VERSION = '1.2'; // Increment this to force cache refresh
+        const CURRENT_VERSION = '1.3'; // Increment this to force cache refresh
         
         // Check cache version
         const cachedVersion = localStorage.getItem(CACHE_VERSION_KEY);
@@ -723,7 +723,7 @@
             
             const personalHtml = `
                 <div class="stat-card">
-                    <h3>👥 Together</h3>
+                    <h3>👣 Together</h3>
                     <div class="stat-number">${stats.together.total}</div>
                     <div class="stat-label">Total Rooms</div>
                     <div style="margin-top: 15px;">
@@ -734,7 +734,7 @@
                 </div>
                 
                 <div class="stat-card">
-                    <h3>👤 Matt</h3>
+                    <h3>👾 Matt</h3>
                     <div class="stat-number">${stats.matt.total}</div>
                     <div class="stat-label">Total Rooms</div>
                     <div style="margin-top: 15px;">
@@ -745,7 +745,7 @@
                 </div>
                 
                 <div class="stat-card">
-                    <h3>👤 Mike</h3>
+                    <h3>🦕 Mike</h3>
                     <div class="stat-number">${stats.mike.total}</div>
                     <div class="stat-label">Total Rooms</div>
                     <div style="margin-top: 15px;">
