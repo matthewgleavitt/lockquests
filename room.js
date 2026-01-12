@@ -147,10 +147,10 @@
     
     function updatePage(room) {
         // Update title and meta
-        const pageTitle = `${room.name} - ${room.company} | Lock Quests`;
+        const pageTitle = `${room.name} - ${room.company} | The Lock Quest Monsters`;
         const pageDescription = room.description 
-            ? `${room.description.substring(0, 155)}...` 
-            : `${room.name} escape room at ${room.company} in ${room.location}, ${room.state}. Rated ${room.avgRating.toFixed(1)}/5 by The Lock Quest Monsters.`;
+            ? `Rated ${room.avgRating.toFixed(1)}/5 - ${room.description.substring(0, 140)}...` 
+            : `Rated ${room.avgRating.toFixed(1)}/5 - ${room.name} at ${room.company} in ${room.location}, ${room.state}.`;
         
         document.title = pageTitle;
         
