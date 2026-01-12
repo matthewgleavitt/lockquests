@@ -192,7 +192,7 @@
         // Update tags with clickable links
         // Build genre tags (can have multiple separated by comma)
         const genreTags = room.genre ? room.genre.split(',').map(g => g.trim()).filter(g => g).map(g => `
-            <a href="index.html?genre=${encodeURIComponent(g)}" class="tag tag-genre">
+            <a href="/?genre=${encodeURIComponent(g)}" class="tag tag-genre">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 5px;">
                     <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
                     <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
@@ -203,7 +203,7 @@
         
         // Build theme tags (can have multiple separated by comma)
         const themeTags = room.theme ? room.theme.split(',').map(t => t.trim()).filter(t => t).map(t => `
-            <a href="index.html?theme=${encodeURIComponent(t)}" class="tag tag-theme">
+            <a href="/?theme=${encodeURIComponent(t)}" class="tag tag-theme">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 5px;">
                     <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/>
                     <line x1="7" y1="7" x2="7.01" y2="7"/>
@@ -213,21 +213,21 @@
         `).join('') : '';
         
         const tagsHtml = `
-            <a href="index.html?company=${encodeURIComponent(room.company)}" class="tag">
+            <a href="/?company=${encodeURIComponent(room.company)}" class="tag">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 5px;">
                     <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
                     <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
                 </svg>
                 ${room.company}
             </a>
-            <a href="index.html?state=${encodeURIComponent(room.state)}" class="tag">
+            <a href="/?state=${encodeURIComponent(room.state)}" class="tag">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 5px;">
                     <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
                     <circle cx="12" cy="10" r="3"/>
                 </svg>
                 ${room.state}
             </a>
-            <a href="index.html?rating=${room.avgRating.toFixed(1)}" class="tag">
+            <a href="/?rating=${room.avgRating.toFixed(1)}" class="tag">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: middle; margin-right: 5px;">
                     <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
                 </svg>
