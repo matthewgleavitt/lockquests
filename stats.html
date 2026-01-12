@@ -133,8 +133,8 @@
         }
 
         .milestone-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            display: flex;
+            flex-direction: column;
             gap: 10px;
             margin-top: 12px;
         }
@@ -142,22 +142,55 @@
         .milestone-badge {
             background: linear-gradient(135deg, #3F3B52, #5a5669);
             color: white;
-            padding: 10px 8px;
+            padding: 12px 15px;
             border-radius: 10px;
-            font-family: 'Bebas Neue', sans-serif;
-            font-size: 1.5em;
-            letter-spacing: 1px;
+            font-family: 'Source Sans 3', sans-serif;
+            font-size: 1em;
             box-shadow: 0 3px 10px rgba(63, 59, 82, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .milestone-number {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.8em;
+            letter-spacing: 1px;
+            min-width: 60px;
         }
         
         .milestone-details {
-            font-family: 'Source Sans 3', sans-serif;
-            font-size: 0.4em;
-            margin-top: 5px;
+            font-size: 0.85em;
             opacity: 0.9;
-            line-height: 1.4;
+            line-height: 1.3;
             font-weight: 400;
-            letter-spacing: 0;
+        }
+        
+        .five-star-item {
+            display: block;
+            background: linear-gradient(135deg, #3F3B52, #5a5669);
+            color: white;
+            padding: 10px 12px;
+            margin: 5px 0;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.75em;
+            line-height: 1.3;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .five-star-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(63, 59, 82, 0.4);
+        }
+        
+        .five-star-item strong {
+            color: white;
+        }
+        
+        .five-star-item span {
+            color: rgba(255,255,255,0.8);
+            font-size: 0.95em;
         }
 
         .section-header {
@@ -677,11 +710,11 @@
             const render5StarList = (rooms) => {
                 if (rooms.length === 0) return '<div style="font-size: 0.9em; color: #999; margin-top: 10px;">No 5-star rooms yet!</div>';
                 return `
-                    <div style="margin-top: 15px; text-align: left; max-height: 300px; overflow-y: auto;">
+                    <div style="margin-top: 15px; text-align: left; max-height: 300px; overflow-y: auto; padding-right: 5px;">
                         ${rooms.map(r => `
-                            <a href="room.html?id=${r.number}" style="display: block; padding: 8px; margin: 5px 0; background: #f5f5f5; border-radius: 5px; text-decoration: none; color: #333; font-size: 0.75em; line-height: 1.3; transition: background 0.2s;">
+                            <a href="room.html?id=${r.number}" class="five-star-item">
                                 <strong>${r.room}</strong><br>
-                                <span style="color: #666; font-size: 0.95em;">[${r.company}] - ${r.location}</span>
+                                <span>[${r.company}] - ${r.location}</span>
                             </a>
                         `).join('')}
                     </div>
@@ -689,6 +722,17 @@
             };
             
             const personalHtml = `
+                <div class="stat-card">
+                    <h3>👥 Together</h3>
+                    <div class="stat-number">${stats.together.total}</div>
+                    <div class="stat-label">Total Rooms</div>
+                    <div style="margin-top: 15px;">
+                        <div class="stat-number" style="font-size: 2.5em;">${stats.together.fiveStars}</div>
+                        <div class="stat-label">5-Star Ratings</div>
+                        ${render5StarList(stats.together.fiveStarRooms)}
+                    </div>
+                </div>
+                
                 <div class="stat-card">
                     <h3>👤 Matt</h3>
                     <div class="stat-number">${stats.matt.total}</div>
@@ -710,29 +754,30 @@
                         ${render5StarList(stats.mike.fiveStarRooms)}
                     </div>
                 </div>
-                
-                <div class="stat-card">
-                    <h3>👥 Together</h3>
-                    <div class="stat-number">${stats.together.total}</div>
-                    <div class="stat-label">Total Rooms</div>
-                    <div style="margin-top: 15px;">
-                        <div class="stat-number" style="font-size: 2.5em;">${stats.together.fiveStars}</div>
-                        <div class="stat-label">5-Star Ratings</div>
-                        ${render5StarList(stats.together.fiveStarRooms)}
-                    </div>
-                </div>
             `;
             document.getElementById('personal-stats').innerHTML = personalHtml;
             
             // Milestones - now with room names, company, and location
             const milestonesHtml = `
                 <div class="stat-card">
+                    <h3>Together Milestones</h3>
+                    <div class="milestone-grid">
+                        ${stats.together.milestones.map(m => `
+                            <div class="milestone-badge">
+                                <div class="milestone-number">#${m.number}</div>
+                                ${m.room ? `<div class="milestone-details">${m.room}<br>[${m.company}] - ${m.location}</div>` : '<div class="milestone-details">-</div>'}
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+                
+                <div class="stat-card">
                     <h3>Matt's Milestones</h3>
                     <div class="milestone-grid">
                         ${stats.matt.milestones.map(m => `
                             <div class="milestone-badge">
-                                #${m.number}
-                                ${m.room ? `<div class="milestone-details">${m.room}<br>[${m.company}]<br>${m.location}</div>` : ''}
+                                <div class="milestone-number">#${m.number}</div>
+                                ${m.room ? `<div class="milestone-details">${m.room}<br>[${m.company}] - ${m.location}</div>` : '<div class="milestone-details">-</div>'}
                             </div>
                         `).join('')}
                     </div>
@@ -743,20 +788,8 @@
                     <div class="milestone-grid">
                         ${stats.mike.milestones.map(m => `
                             <div class="milestone-badge">
-                                #${m.number}
-                                ${m.room ? `<div class="milestone-details">${m.room}<br>[${m.company}]<br>${m.location}</div>` : ''}
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-                
-                <div class="stat-card">
-                    <h3>Together Milestones</h3>
-                    <div class="milestone-grid">
-                        ${stats.together.milestones.map(m => `
-                            <div class="milestone-badge">
-                                #${m.number}
-                                ${m.room ? `<div class="milestone-details">${m.room}<br>[${m.company}]<br>${m.location}</div>` : ''}
+                                <div class="milestone-number">#${m.number}</div>
+                                ${m.room ? `<div class="milestone-details">${m.room}<br>[${m.company}] - ${m.location}</div>` : '<div class="milestone-details">-</div>'}
                             </div>
                         `).join('')}
                     </div>
