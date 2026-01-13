@@ -1,56 +1,13 @@
-// Room page logic - WITH 10-MINUTE CACHING AND CLICKABLE TAGS
+// Room page logic - WITH CLICKABLE TAGS
 (function() {
     const config = window.LOCKQUESTS_CONFIG;
     const urlParams = new URLSearchParams(window.location.search);
     const roomId = parseInt(urlParams.get('id')) || 1;
     
-    // Cache configuration
-    const CACHE_KEY = 'lockquests_data';
-    const CACHE_TIMESTAMP_KEY = 'lockquests_timestamp';
-    const CACHE_VERSION_KEY = 'lockquests_cache_version';
-    const CACHE_DURATION = 10 * 60 * 1000; // 10 minutes
-    const CURRENT_VERSION = '1.4'; // Increment this to force cache refresh
-    
-    // Check cache version
-    const cachedVersion = localStorage.getItem(CACHE_VERSION_KEY);
-    if (cachedVersion !== CURRENT_VERSION) {
-        console.log('Cache version changed, clearing old cache');
-        localStorage.removeItem(CACHE_KEY);
-        localStorage.removeItem(CACHE_TIMESTAMP_KEY);
-        localStorage.setItem(CACHE_VERSION_KEY, CURRENT_VERSION);
-    }
-    
     if (!config || config.SHEET_ID === 'YOUR_SHEET_ID' || config.API_KEY === 'YOUR_API_KEY') {
         document.getElementById('roomDescription').textContent = 
             'Please configure your Google Sheet ID and API Key in config.js';
         return;
-    }
-    
-    function getCache() {
-        try {
-            const timestamp = localStorage.getItem(CACHE_TIMESTAMP_KEY);
-            const data = localStorage.getItem(CACHE_KEY);
-            
-            if (timestamp && data) {
-                const age = Date.now() - parseInt(timestamp);
-                if (age < CACHE_DURATION) {
-                    console.log('Using cached data (age: ' + Math.round(age / 1000) + 's)');
-                    return JSON.parse(data);
-                }
-            }
-        } catch (e) {
-            console.error('Cache error:', e);
-        }
-        return null;
-    }
-    
-    function setCache(data) {
-        try {
-            localStorage.setItem(CACHE_KEY, JSON.stringify(data));
-            localStorage.setItem(CACHE_TIMESTAMP_KEY, Date.now().toString());
-        } catch (e) {
-            console.error('Error saving cache:', e);
-        }
     }
     
     function slugify(text) {
@@ -60,30 +17,23 @@
             .replace(/^-+|-+$/g, '');
     }
     
-    // Check cache first
-    const cached = getCache();
-    if (cached) {
-        processData(cached);
-    } else {
-        // Fetch from Google Sheets
-        console.log('Fetching fresh data from Google Sheets');
-        const url = `https://sheets.googleapis.com/v4/spreadsheets/${config.SHEET_ID}/values/${config.SHEET_RANGE}?key=${config.API_KEY}`;
-        
-        fetch(url)
-            .then(response => response.json())
-            .then(data => {
-                if (data.values) {
-                    setCache(data.values);
-                    processData(data.values);
-                } else {
-                    showError('Room not found');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                showError('Error loading room data');
-            });
-    }
+    // Fetch from Google Sheets
+    console.log('Fetching data from Google Sheets');
+    const url = `https://sheets.googleapis.com/v4/spreadsheets/${config.SHEET_ID}/values/${config.SHEET_RANGE}?key=${config.API_KEY}`;
+    
+    fetch(url)
+        .then(response => response.json())
+        .then(data => {
+            if (data.values) {
+                processData(data.values);
+            } else {
+                showError('Room not found');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showError('Error loading room data');
+        });
     
     function processData(sheetData) {
         const room = findRoom(sheetData, roomId);

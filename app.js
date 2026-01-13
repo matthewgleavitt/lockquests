@@ -1,13 +1,6 @@
-// Main app logic with caching, filters, and search
+// Main app logic with filters and search
 (function() {
     const config = window.LOCKQUESTS_CONFIG;
-    
-    // Cache configuration
-    const CACHE_KEY = 'lockquests_data';
-    const CACHE_TIMESTAMP_KEY = 'lockquests_timestamp';
-    const CACHE_VERSION_KEY = 'lockquests_cache_version';
-    const CACHE_DURATION = 10 * 60 * 1000; // 10 minutes
-    const CURRENT_VERSION = '2.2'; // Increment this to force cache refresh
     
     // Flag to prevent filter events during initialization
     let isInitializing = true;
@@ -15,48 +8,12 @@
     // Mobile detection
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
     
-    // Check cache version
-    const cachedVersion = localStorage.getItem(CACHE_VERSION_KEY);
-    if (cachedVersion !== CURRENT_VERSION) {
-        console.log('Cache version changed, clearing old cache');
-        localStorage.removeItem(CACHE_KEY);
-        localStorage.removeItem(CACHE_TIMESTAMP_KEY);
-        localStorage.setItem(CACHE_VERSION_KEY, CURRENT_VERSION);
-    }
-    
     if (!config || config.SHEET_ID === 'YOUR_SHEET_ID' || config.API_KEY === 'YOUR_API_KEY') {
         console.log('Please configure your Google Sheet ID and API Key in config.js');
         return;
     }
     
     let allRooms = [];
-    
-    function getCache() {
-        try {
-            const timestamp = localStorage.getItem(CACHE_TIMESTAMP_KEY);
-            const data = localStorage.getItem(CACHE_KEY);
-            
-            if (timestamp && data) {
-                const age = Date.now() - parseInt(timestamp);
-                if (age < CACHE_DURATION) {
-                    console.log('Using cached data (age: ' + Math.round(age / 1000) + 's)');
-                    return JSON.parse(data);
-                }
-            }
-        } catch (e) {
-            console.error('Cache error:', e);
-        }
-        return null;
-    }
-    
-    function setCache(data) {
-        try {
-            localStorage.setItem(CACHE_KEY, JSON.stringify(data));
-            localStorage.setItem(CACHE_TIMESTAMP_KEY, Date.now().toString());
-        } catch (e) {
-            console.error('Error saving cache:', e);
-        }
-    }
     
     function slugify(text) {
         return text.toLowerCase()
@@ -72,28 +29,22 @@
     }
     
     function loadData() {
-        const cached = getCache();
-        if (cached) {
-            processData(cached);
-        } else {
-            console.log('Fetching fresh data from Google Sheets');
-            const url = `https://sheets.googleapis.com/v4/spreadsheets/${config.SHEET_ID}/values/${config.SHEET_RANGE}?key=${config.API_KEY}`;
-            
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.values) {
-                        setCache(data.values);
-                        processData(data.values);
-                    } else {
-                        showError('No data found in sheet');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error loading data:', error);
-                    showError('Error loading data. Check console for details.');
-                });
-        }
+        console.log('Fetching data from Google Sheets');
+        const url = `https://sheets.googleapis.com/v4/spreadsheets/${config.SHEET_ID}/values/${config.SHEET_RANGE}?key=${config.API_KEY}`;
+        
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                if (data.values) {
+                    processData(data.values);
+                } else {
+                    showError('No data found in sheet');
+                }
+            })
+            .catch(error => {
+                console.error('Error loading data:', error);
+                showError('Error loading data. Check console for details.');
+            });
     }
     
     function processData(sheetData) {
