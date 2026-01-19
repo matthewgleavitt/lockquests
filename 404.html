@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO Meta Tags -->
+    <title>Page Not Found | The Lock Quest Monsters</title>
+    <meta name="description" content="The page you're looking for doesn't exist. Browse our 600+ escape room experiences.">
+    <meta name="robots" content="noindex, follow">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        .error-page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 40px 20px;
+            background: #1a1a1a;
+            color: white;
+        }
+        
+        .error-code {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 8em;
+            color: #3F3B52;
+            margin: 0;
+            line-height: 1;
+        }
+        
+        .error-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.5em;
+            margin: 20px 0 10px;
+            letter-spacing: 2px;
+        }
+        
+        .error-message {
+            font-size: 1.2em;
+            opacity: 0.8;
+            max-width: 500px;
+            margin: 0 auto 30px;
+        }
+        
+        .redirect-notice {
+            font-size: 1em;
+            opacity: 0.6;
+            margin-bottom: 30px;
+        }
+        
+        .redirect-notice span {
+            font-weight: bold;
+            color: #3F3B52;
+        }
+        
+        .error-links {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .error-link {
+            display: inline-block;
+            padding: 12px 25px;
+            background: #3F3B52;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .error-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(63, 59, 82, 0.4);
+        }
+        
+        .error-link.secondary {
+            background: transparent;
+            border: 2px solid #3F3B52;
+        }
+    </style>
+    
+    <script>
+        // Countdown and redirect
+        let seconds = 8;
+        
+        function updateCountdown() {
+            const countdownEl = document.getElementById('countdown');
+            if (countdownEl) {
+                countdownEl.textContent = seconds;
+            }
+            
+            if (seconds <= 0) {
+                window.location.href = '/';
+            } else {
+                seconds--;
+                setTimeout(updateCountdown, 1000);
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', updateCountdown);
+    </script>
+</head>
+<body>
+    <div class="error-page">
+        <div class="error-code">404</div>
+        <h1 class="error-title">You Didn't Escape This Page!</h1>
+        <p class="error-message">
+            Looks like this room doesn't exist anymore. Maybe it was a secret passage that closed behind you?
+        </p>
+        <p class="redirect-notice">
+            Redirecting you to our homepage in <span id="countdown">8</span> seconds...
+        </p>
+        <div class="error-links">
+            <a href="/" class="error-link">Browse All Rooms</a>
+            <a href="/stats.html" class="error-link secondary">View Stats</a>
+            <a href="/about.html" class="error-link secondary">About Us</a>
+        </div>
+    </div>
+</body>
+</html>
