@@ -540,7 +540,9 @@
                     const location = row[locationIdx] || '';
                     const state = row[stateIdx] || '';
                     
-                    if (row[mattUniqueIdx]) {
+                    // A replay row can carry text in this column; parseInt would give
+                    // NaN, which a Set stores as a value and inflates the total.
+                    if (Number.isFinite(parseInt(row[mattUniqueIdx]))) {
                         const num = parseInt(row[mattUniqueIdx]);
                         mattRooms.add(num);
                         mattRoomsWithNames.push({ number: num, room: roomName, company, location, state });
@@ -550,7 +552,9 @@
                         }
                     }
                     
-                    if (row[mikeUniqueIdx]) {
+                    // A replay row can carry text in this column; parseInt would give
+                    // NaN, which a Set stores as a value and inflates the total.
+                    if (Number.isFinite(parseInt(row[mikeUniqueIdx]))) {
                         const num = parseInt(row[mikeUniqueIdx]);
                         mikeRooms.add(num);
                         mikeRoomsWithNames.push({ number: num, room: roomName, company, location, state });
@@ -560,7 +564,9 @@
                         }
                     }
                     
-                    if (row[togetherIdx]) {
+                    // A replay row can carry text in this column; parseInt would give
+                    // NaN, which a Set stores as a value and inflates the total.
+                    if (Number.isFinite(parseInt(row[togetherIdx]))) {
                         const num = parseInt(row[togetherIdx]);
                         togetherRooms.add(num);
                         togetherRoomsWithNames.push({ number: num, room: roomName, company, location, state });
