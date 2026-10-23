@@ -70,6 +70,10 @@
             if (!row[togetherIdx]) continue;
             
             const togetherNum = parseInt(row[togetherIdx]);
+            // Replay rows carry text (e.g. "Replay") in this column. parseInt
+            // gives NaN, and NaN makes the sort comparator below inconsistent,
+            // which scrambles the whole grid order. Skip them.
+            if (!Number.isFinite(togetherNum)) continue;
             const roomName = row[roomNameIdx] || 'Unknown Room';
             const company = row[companyIdx] || '';
             const state = row[stateIdx] || '';

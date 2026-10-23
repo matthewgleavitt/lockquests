@@ -50,7 +50,8 @@
         
         // Count total "together" rooms for navigation
         const togetherIdx = headers.indexOf('Together Unique #');
-        const totalRooms = rows.filter(row => row[togetherIdx] && row[togetherIdx].trim()).length;
+        const totalRooms = rows.filter(row => row[togetherIdx] &&
+            Number.isFinite(parseInt(row[togetherIdx]))).length;
         document.getElementById('navTotal').textContent = totalRooms;
         
         const colIndices = {
