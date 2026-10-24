@@ -37,6 +37,31 @@
         if (animate) setTimeout(function () { el.style.transition = ''; }, 240);
     }
 
+
+    // location.reload() can be served from cache, which is exactly the problem
+    // on an iOS home-screen app. Navigating to a URL the cache has never seen
+    // forces a real fetch; the marker is stripped again once the page loads.
+    function hardReload() {
+        try {
+            var sp = new URLSearchParams(location.search);
+            sp.set('_r', String(Date.now()));
+            location.replace(location.pathname + '?' + sp.toString() + location.hash);
+        } catch (err) {
+            location.reload();
+        }
+    }
+
+    // Tidy the marker out of the address bar after the fresh load.
+    (function () {
+        try {
+            var sp = new URLSearchParams(location.search);
+            if (!sp.has('_r')) return;
+            sp.delete('_r');
+            var q = sp.toString();
+            history.replaceState(null, '', location.pathname + (q ? '?' + q : '') + location.hash);
+        } catch (err) { /* address bar stays as-is, page still works */ }
+    })();
+
     document.addEventListener('touchstart', function (e) {
         pulling = e.touches.length === 1 && atTop();
         armed = false;
@@ -58,7 +83,7 @@
         pulling = false;
         if (armed) {
             indicator().classList.add('ptr-spin');
-            location.reload();
+            hardReload();
         } else {
             reset(true);
         }
