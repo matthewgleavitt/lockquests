@@ -534,6 +534,9 @@
                 
                 rows.forEach(row => {
                     if (!row[0]) return; // Skip empty rows
+                    // Unplayed rooms carry no rating from either of us.
+                    if (!(row[mikeRatingIdx] || '').trim() &&
+                        !(row[mattRatingIdx] || '').trim()) return;
                     
                     const roomName = row[roomNameIdx] || '';
                     const company = row[companyIdx] || '';
@@ -863,5 +866,6 @@
             <div class="mobile-nav-label">Stats</div>
         </a>
     </nav>
+    <script src="ptr.js"></script>
 </body>
 </html>

@@ -61,6 +61,8 @@
         const descriptionIdx = headers.indexOf('Description');
         const genreIdx = headers.indexOf('Genre');
         const themeIdx = headers.indexOf('Theme');
+        const mikeRatingIdx = headers.indexOf('Mike Rating');
+        const mattRatingIdx = headers.indexOf('Matt Rating');
         
         allRooms = [];
         const states = new Set();
@@ -74,6 +76,11 @@
             // gives NaN, and NaN makes the sort comparator below inconsistent,
             // which scrambles the whole grid order. Skip them.
             if (!Number.isFinite(togetherNum)) continue;
+            // A room neither of us has rated yet is booked, not played.
+            // Keep it out of the site until a score goes in the sheet.
+            const hasMike = mikeRatingIdx !== -1 && (row[mikeRatingIdx] || '').trim();
+            const hasMatt = mattRatingIdx !== -1 && (row[mattRatingIdx] || '').trim();
+            if (!hasMike && !hasMatt) continue;
             const roomName = row[roomNameIdx] || 'Unknown Room';
             const company = row[companyIdx] || '';
             const state = row[stateIdx] || '';
