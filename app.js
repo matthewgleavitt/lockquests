@@ -22,6 +22,16 @@
             .replace(/^-+|-+$/g, '');
     }
     
+
+    // Ratings are averages of two half-step scores, so .25 and .75 are real
+    // values, not rounding artifacts. Show one decimal when that is exact,
+    // two when it is not, and never round a genuine value away.
+    function fmtRating(n) {
+        var v = parseFloat(n);
+        if (!isFinite(v)) return '0.0';
+        return Math.abs(v * 10 - Math.round(v * 10)) < 1e-9 ? v.toFixed(1) : v.toFixed(2);
+    }
+
     function getPhotoUrl(togetherNum, roomName) {
         const numPadded = String(togetherNum).padStart(4, '0');
         const slug = slugify(roomName);
@@ -298,7 +308,7 @@
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: middle; margin-right: 3px;">
                                     <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
                                 </svg>
-                                ${room.rating.toFixed(1)}
+                                ${fmtRating(room.rating)}
                             </span>
                             <span>
                                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 3px;">

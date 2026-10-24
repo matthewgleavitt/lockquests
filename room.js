@@ -10,6 +10,16 @@
         return;
     }
     
+
+    // Ratings are averages of two half-step scores, so .25 and .75 are real
+    // values, not rounding artifacts. Show one decimal when that is exact,
+    // two when it is not, and never round a genuine value away.
+    function fmtRating(n) {
+        var v = parseFloat(n);
+        if (!isFinite(v)) return '0.0';
+        return Math.abs(v * 10 - Math.round(v * 10)) < 1e-9 ? v.toFixed(1) : v.toFixed(2);
+    }
+
     function slugify(text) {
         return text.toLowerCase()
             .replace(/[^\w\s-]/g, '')
@@ -103,8 +113,8 @@
         // Update title and meta
         const pageTitle = `${room.name} - ${room.company} | The Lock Quest Monsters`;
         const pageDescription = room.description 
-            ? `Rated ${room.avgRating.toFixed(1)}/5 - ${room.description.substring(0, 140)}...` 
-            : `Rated ${room.avgRating.toFixed(1)}/5 - ${room.name} at ${room.company} in ${room.location}, ${room.state}.`;
+            ? `Rated ${fmtRating(room.avgRating)}/5 - ${room.description.substring(0, 140)}...` 
+            : `Rated ${fmtRating(room.avgRating)}/5 - ${room.name} at ${room.company} in ${room.location}, ${room.state}.`;
         
         document.title = pageTitle;
         
@@ -130,9 +140,9 @@
         document.getElementById('roomLocation').textContent = `${room.location}, ${room.state}`;
         
         // Update rating
-        document.getElementById('overallRating').textContent = room.avgRating.toFixed(1);
-        document.getElementById('mattRating').textContent = room.mattRating.toFixed(1);
-        document.getElementById('mikeRating').textContent = room.mikeRating.toFixed(1);
+        document.getElementById('overallRating').textContent = fmtRating(room.avgRating);
+        document.getElementById('mattRating').textContent = fmtRating(room.mattRating);
+        document.getElementById('mikeRating').textContent = fmtRating(room.mikeRating);
         
         // Update rating bars
         document.getElementById('mattBar').style.width = `${(room.mattRating / 5) * 100}%`;
@@ -181,11 +191,11 @@
                 </svg>
                 ${room.state}
             </a>
-            <a href="/?rating=${room.avgRating.toFixed(1)}" class="tag">
+            <a href="/?rating=${Math.floor(room.avgRating)}" class="tag">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style="vertical-align: middle; margin-right: 5px;">
                     <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
                 </svg>
-                ${room.avgRating.toFixed(1)}
+                ${fmtRating(room.avgRating)}
             </a>
             ${genreTags}
             ${themeTags}
