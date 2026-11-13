@@ -16,6 +16,11 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://www.lockquests.com/terpeca-2026.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://www.lockquests.com/room.html?id=1</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
