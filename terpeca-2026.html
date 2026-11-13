@@ -108,11 +108,11 @@
         .tp-pill { font-family: 'Bebas Neue', sans-serif; font-size: 1.3em; letter-spacing: 1px; border: 2px solid var(--tp-ink); border-radius: 999px; padding: 1px 12px; }
         .tp-pill.avg { background: var(--tp-purple); border-color: var(--tp-purple); }
 
-        .tp-fights { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+        .tp-fights { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
         .tp-fight { position: relative; min-height: 360px; overflow: hidden; border-radius: 6px; background: #1A1A1F; }
         .tp-fight img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
         .tp-fight::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(11,11,13,0.1) 0%, rgba(11,11,13,0.6) 45%, rgba(11,11,13,0.95) 100%); }
-        .tp-fight-body { position: absolute; left: 24px; right: 24px; bottom: 24px; z-index: 1; }
+        .tp-fight-body { position: absolute; left: 36px; right: 36px; bottom: 34px; z-index: 1; }
         .tp-fight .name { font-family: 'Bebas Neue', sans-serif; font-size: 2.6em; line-height: 0.95; }
         .tp-fight .gap { color: var(--tp-soft); font-weight: 600; margin-top: 8px; }
 
@@ -245,6 +245,7 @@
                     <a href="/">All Escapes</a>
                     <a href="about.html">About</a>
                     <a href="stats.html">Stats</a>
+                    <a href="terpeca-2026.html">TERPECA 2026</a>
                 </nav>
             </div>
         </div>
@@ -1304,7 +1305,7 @@
                         ${polaroid(r)}
                         ${copy(r, false)}
                     </div>`).join('')}</div>
-                    <div class="tp-crown"><div class="one">1</div><div class="tie">Can't split it: a shared #1</div></div>
+                    <div class="tp-crown"><div class="one">1</div><div class="tie">Shared #1</div></div>
                 </div>`;
                 counter.textContent = '#1';
             } else {
@@ -1455,6 +1456,15 @@
                 </svg>
             </div>
             <div class="mobile-nav-label">Stats</div>
+        </a>
+        <a href="terpeca-2026.html" class="mobile-nav-item active">
+            <div class="mobile-nav-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0V4z"/>
+                    <path d="M17 6h3v2a3 3 0 0 1-3 3M7 6H4v2a3 3 0 0 0 3 3"/>
+                </svg>
+            </div>
+            <div class="mobile-nav-label">TERPECA</div>
         </a>
     </nav>
 </body>
